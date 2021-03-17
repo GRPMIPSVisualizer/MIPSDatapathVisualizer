@@ -824,6 +824,7 @@ export class Assembler {
         instructionCounter = 0;
         for (i = 0; i < this.sourceIns.length; i++) {
             if (this.sourceIns[i] == "" || patt.test(this.sourceIns[i]) || this.sourceIns[i].substring(this.sourceIns[i].length - 1, this.sourceIns[i].length) == ":") {
+                instructionCounter++;
                 continue;
             } else {
                 posOfSpace = this.sourceIns[i].indexOf(" ");
