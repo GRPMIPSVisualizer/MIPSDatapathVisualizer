@@ -2,18 +2,39 @@ import {Decoder} from "./Decoder";
 import {InstructionR} from "./InstructionR";
 import {MapForRegister} from "./MapForRegister";
 
+/**
+ * Class for validating and decoding the instruction of type-R into binary code.
+ * It contains methods for validating instruction, decoding instruction and getting the error message.
+ */
 export class DecoderForR extends Decoder {
+    /**
+     * The string for error message.
+     */
     private errMsg: string = "";
+    /**
+     * The decoder to validate and decode instructions of type-R.
+     */
     private static decoder: DecoderForR = new DecoderForR();
 
+    /**
+     * Constructor of DecoderForR.
+     */
     private constructor(){
         super();
     }
 
+    /**
+     * Method for getting the decoder for instruction of type-R.
+     * @returns the decoder to validate and decode instructions of type-R.
+     */
     public static getDecoder(): DecoderForR {
         return this.decoder;
     }
 
+    /**
+     * Method for validating the instruction of type-R.
+     * @returns true if the instruction is valid, otherwise false.
+     */
     public validate(): boolean {
         let posOfSpace: number = this.ins.indexOf(" ");
         let operandRS: string = "";
@@ -51,7 +72,7 @@ export class DecoderForR extends Decoder {
                 this.errMsg = this.errMsg + "Error 210: Invalid operand. -- " + this.getIns() + "\n";
                 return false;
             } else if (operands[i] == "" || (operands[i].charAt(0) == "$" && patt1.test(operand) && +operand <= 31)) {
-                break;
+                continue;
             } else if (operands[i].charAt(0) == "$" && patt2.test(operand)) {
                 if (MapForRegister.getMap().has(operand)) {
                     let operandID: string | undefined = MapForRegister.getMap().get(operand);
@@ -73,11 +94,19 @@ export class DecoderForR extends Decoder {
         return true;
     }
 
+    /**
+     * Method for decoding the instruction of type-R into binary code.
+     * @returns void
+     */
     public decode(): void {
         let instruction: InstructionR = new InstructionR(this.ins);
         this.binIns = instruction.getBinIns();
     }
 
+    /**
+     * Method for getting the error message of invalid instruction of type-R.
+     * @returns a string of error message.
+     */
     public getErrMsg(): string {
         return this.errMsg;
     }

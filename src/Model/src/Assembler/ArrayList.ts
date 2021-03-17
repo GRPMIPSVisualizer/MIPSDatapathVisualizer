@@ -1,51 +1,51 @@
 import {List} from "./List";
 export class ArrayList<E> implements List<E> {
 
-    // The array used to store the elements
+    /**
+     * The array used to store the elements.
+     */
     elementData: Object[] = [];
 
-    // The number of elements stored in the ArrayList
+    /**
+     * The number of elements stored in the ArrayList.
+     */
     sizeNum: number = 0;
 
 
     /**
      * Constructor for ArrayList
      * @param null | initialCapacity
-     * @return void
+     * @returns void
      */
     constructor()
     constructor(initialCapacity: number)
     constructor(initialCapacity?: any) {
         if (typeof initialCapacity === 'number') {
-            //initialize the capacity of the ArrayList
             if (initialCapacity < 0) {
                 throw new Error("is no arrayList index : " + initialCapacity);
             }
             this.elementData = new Array<Object>(initialCapacity);
         } else {
-            //initialize the capacity of the ArrayList
             this.elementData = new Array<Object>(10);
         }
     }
 
     /**
-     * 
+     * Add an element to ArrayList.
      * @param arg0 If there is only one argument, arg0 is the object to be added. If there are
      * two arguments, arg0 is the index at which the specified object is to be added.
      * @param arg1 If there are two arguments, arg1 is the object to be added.
-     * @return void
+     * @returns void
      */
     add(object: E): void
     add(index: number, object: E): void
     add(arg0?: any, arg1?: any): void {
         if (typeof arg0 === 'number') {
-            //add an element using index
             this.ensureExplicitCapacity();
             this.rangeCheck(arg0);
             this.elementData.splice(arg0, 0, arg1);
             this.sizeNum++;
         } else {
-            //
             this.ensureExplicitCapacity();
             this.elementData[this.sizeNum] = arg0;
             this.sizeNum++;
@@ -56,7 +56,7 @@ export class ArrayList<E> implements List<E> {
     /**
      * Get the object specified by the index
      * @param index 
-     * @return Object
+     * @returns Object
      */
     get(index: number): Object {
         this.rangeCheck(index);
@@ -68,7 +68,7 @@ export class ArrayList<E> implements List<E> {
      * Update the object at the specified index
      * @param index 
      * @param Object
-     * @return void
+     * @returns void
      */
     update(index: number, Object: E): void {
         this.rangeCheck(index);
@@ -79,7 +79,7 @@ export class ArrayList<E> implements List<E> {
     /**
      * Remove the specified object
      * @param arg0 the object to be removed or the index at which the object is to be removed
-     * @return true if the object is removed successfully, otherwise false
+     * @returns true if the object is removed successfully, otherwise false
      */
     remove(object: E): boolean;
     remove(index: number): boolean;
@@ -105,7 +105,7 @@ export class ArrayList<E> implements List<E> {
 
     /**
      * Get the size of the ArrayList
-     * @return the size of the ArrayList
+     * @returns the size of the ArrayList
      */
     public size(): number {
         return this.sizeNum;
@@ -114,6 +114,7 @@ export class ArrayList<E> implements List<E> {
     /**
      * Check whether the index exceeds the capacity
      * @param index
+     * @returns void
      */
     private rangeCheck(index: number): void {
         if (index >= this.sizeNum || index < 0) {
@@ -124,6 +125,7 @@ export class ArrayList<E> implements List<E> {
 
     /**
      *  Expand the capacity of the ArrayList to 1.5 times
+     * @returns void
      */
     public ensureExplicitCapacity(): void {
         if (this.elementData.length < this.sizeNum + 1) {

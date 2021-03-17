@@ -1,20 +1,40 @@
 import {Decoder} from "./Decoder";
 import {InstructionI} from "./InstructionI";
-import {MapForRegister} from "./MapForRegister";
+import { MapForRegister } from "./MapForRegister";
 
+/**
+ * Class for validating and decoding the instruction of type-I into binary code.
+ * It contains methods for validating instruction, decoding instruction and getting the error message.
+ */
 export class DecoderForI extends Decoder {
-    
+    /**
+     * The string for error message.
+     */
     private errMsg: string = "";
+    /**
+     * The decoder to validate and decode instructions of type-I.
+     */
     private static decoder: DecoderForI = new DecoderForI();
 
+    /**
+     * Constructor of DecoderForI.
+     */
     private constructor(){
         super();
     }
 
+    /**
+     * Method for getting the decoder for instruction of type-I.
+     * @returns the decoder to validate and decode instructions of type-I.
+     */
     public static getDecoder(): DecoderForI {
         return this.decoder;
     }
 
+    /**
+     * Method for validating the instruction of type-I.
+     * @returns true if the instruction is valid, otherwise false.
+     */
     public validate(): boolean {
         let posOfSpace: number = this.ins.indexOf(" ");
         let operandRS: string = "";
@@ -71,12 +91,12 @@ export class DecoderForI extends Decoder {
         let operands: Array<string> = [operandRS, operandRT];
         let i: number;
         for (i = 0; i < operands.length; i++) {
-            let operand: string = operands[i].substring(1,operands[i].length);
+            let operand: string = operands[i].substring(1, operands[i].length);
             if (operands[i].charAt(0) == "$" && patt1.test(operand) && +operand > 31) {
                 this.errMsg = this.errMsg + "Error 204: Invalid operand. -- " + this.getIns() + "\n";
                 return false;
             } else if (operands[i] == "" || (operands[i].charAt(0) == "$" && patt1.test(operand) && +operand <= 31)) {
-                break;
+                continue;
             } else if (operands[i].charAt(0) == "$" && patt2.test(operand)) {
                 if (MapForRegister.getMap().has(operand)) {
                     let operandID: string | undefined = MapForRegister.getMap().get(operand);
@@ -99,11 +119,19 @@ export class DecoderForI extends Decoder {
         return true;
     }
     
+    /**
+     * Method for decoding the instruction of type-I into binary code.
+     * @returns void
+     */
     public decode(): void {
         let instruction: InstructionI = new InstructionI(this.ins);
         this.binIns = instruction.getBinIns();
     }
 
+    /**
+     * Method for getting the error message of invalid instruction of type-I.
+     * @returns a string of error message.
+     */
     public getErrMsg(): string {
         return this.errMsg;
     }

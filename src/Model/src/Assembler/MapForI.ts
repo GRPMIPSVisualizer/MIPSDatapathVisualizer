@@ -1,8 +1,11 @@
 /**
- * MapForI stores some type I core instructions and their corresponding 6 bits opcodes.
+ * MapForI stores some type-I core instructions and their corresponding 6 bits opcodes.
  */
 export class MapForI {
 
+    /**
+     * The map which the keys are type-I instructions and the values are their corresponding 6 bits opcodes.
+     */
     private static map = new Map([
         ["addi", "001000"],
         ["addiu", "001001"],
@@ -23,9 +26,15 @@ export class MapForI {
         ["sw", "101011"]
     ]);
 
-    //MapForI is a singleton
+    /**
+     * Constructor of MapForI which is a singleton.
+     */
     private constructor() { }
 
+    /**
+     * Method for getting the singleton map.
+     * @returns a map which the keys are type-I instructions and the values are their corresponding 6 bits opcodes.
+     */
     public static getMap(): Map<string, string> {
         return this.map;
     }

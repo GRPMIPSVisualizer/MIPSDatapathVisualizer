@@ -1,5 +1,11 @@
+/**
+ * MapForCommaNum stores core instructions and amount of the commas in the instructions.
+ */
 export class MapForCommaNum {
 
+    /**
+     * The map which the keys are instructions and the values are their amount of commas.
+     */
     private static map = new Map([
         ["add", 2],
         ["addu", 2],
@@ -49,8 +55,15 @@ export class MapForCommaNum {
         ["sgt", 2]
     ]);
 
+    /**
+     * Constructor of MapForCommaNum which is a singleton.
+     */
     private constructor() { }
 
+    /**
+     * Method for getting the singleton map.
+     * @returns a map which the keys are instructions and the values are their amount of commas.
+     */
     public static getMap(): Map<string, number> {
         return this.map;
     }

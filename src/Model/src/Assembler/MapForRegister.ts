@@ -1,5 +1,11 @@
+/**
+ * MapForRegister stores 32 registers and their indices.
+ */
 export class MapForRegister {
 
+    /**
+     * The map which the keys are registers and the values are their indices.
+     */
     private static map = new Map([
         ["zero", "0"],
         ["at", "1"],
@@ -35,9 +41,15 @@ export class MapForRegister {
         ["ra", "31"]
     ]);
 
-
+    /**
+     * Constructor of MapForRegister which is a singleton.
+     */
     private constructor() { }
 
+    /**
+     * Method for getting the singleton map.
+     * @returns a map which the keys are registers and the values are their indices.
+     */
     public static getMap(): Map<string, string> {
         return this.map;
     }
