@@ -102,6 +102,15 @@ export class ArrayList<E> implements List<E> {
         }
     }
 
+    /**
+     * Clear all elements in the ArrayList.
+     * @returns void
+     */
+    clear(): void {
+        for (let i = 0; i < this.sizeNum; i++) {
+            this.remove(i);
+        }
+    }
 
     /**
      * Get the size of the ArrayList

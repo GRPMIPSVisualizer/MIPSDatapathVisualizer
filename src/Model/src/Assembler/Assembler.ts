@@ -413,10 +413,10 @@ export class Assembler {
 
     /**
      * Store the data in the data segment into maps.
-     * The labels in the data segment are stored as keys and the addresses matched with the labels are stored as values in the map called mapForDataLabel. <br>
-     * The addresses of the data stored by .word instructions are stored as keys and the data stored in this address is stored as values in the map called mapForWord. <br>
-     * The addresses of the data stored by .byte instructions are stored as keys and the data stored in this address is stored as values in the map called mapForByte. <br>
-     * The addresses of string are stored as keys and the string stored in this address is stored as values in the map called mapForAscii. <br>
+     * The labels in the data segment are stored as keys and the addresses matched with the labels are stored as values in the map called mapForDataLabel.
+     * The addresses of the data stored by .word instructions are stored as keys and the data stored in this address is stored as values in the map called mapForWord.
+     * The addresses of the data stored by .byte instructions are stored as keys and the data stored in this address is stored as values in the map called mapForByte.
+     * The addresses of string are stored as keys and the string stored in this address is stored as values in the map called mapForAscii.
      * @returns true if all data is stored successfully and false if there is invalid data type or the data is out of range.
      */
     public storeData(): boolean {
@@ -894,6 +894,24 @@ export class Assembler {
         } else {
             return false;
         }
+    }
+
+    /**
+     * Clear all fields in Assembler.
+     * @returns void
+     */
+    public refresh(): void {
+        this.sources = [];
+        this.data.clear();
+        this.sourceInsAL.clear();
+        this.sourceIns = [];
+        this.basic.clear();
+        this.bin.clear();
+        this.mapForDataLabel.clear();
+        this.mapForWord.clear();
+        this.mapForAscii.clear();
+        this.mapForByte.clear();
+        this.errMsg = "";
     }
 
     /**
