@@ -2,7 +2,7 @@
 import { ArrayList } from "./ArrayList";
 import { Assembler } from "./Assembler";
 let assembler: Assembler = Assembler.getAssembler();
-assembler.setSources("bne $t1,$t2,main" + "\n" + "main:" + "\n" + "add $s1,$20,$21");
+assembler.setSources("add $s1,$20,$21");
 //assembler.setSources(".text" + "\n" + "main: " + "\n" + "la $a0, str" + "\n" + "li $t1,100" + "\n" + "addiu $s1,$0,100" + "\n" + "syscall" + "\n" + ".data" + "\n" + "str: " + "\n" +  ".ascii" + "\n" + "\"s\"");
 if (assembler.preprocess()) {
     if (assembler.assemble()) {

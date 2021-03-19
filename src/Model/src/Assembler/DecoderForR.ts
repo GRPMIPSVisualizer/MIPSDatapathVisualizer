@@ -1,6 +1,6 @@
-import {Decoder} from "./Decoder";
-import {InstructionR} from "./InstructionR";
-import {MapForRegister} from "./MapForRegister";
+import { Decoder } from "./Decoder";
+import { InstructionR } from "./InstructionR";
+import { MapForRegister } from "./MapForRegister";
 
 /**
  * Class for validating and decoding the instruction of type-R into binary code.
@@ -19,7 +19,7 @@ export class DecoderForR extends Decoder {
     /**
      * Constructor of DecoderForR.
      */
-    private constructor(){
+    private constructor() {
         super();
     }
 
@@ -41,6 +41,9 @@ export class DecoderForR extends Decoder {
         let operandRT: string = "";
         let operandRD: string = "";
         let SHAMT: string = "";
+        let patt1 = /^[0-9]+$/;
+        let patt2 = /^[a-z0-9]+$/;
+        let patt3 = /^(\+)?\d+$/;
         if (this.operator == "jr") {
             operandRS = this.ins.substring(posOfSpace + 1, this.ins.length);
         } else if (this.operator == "sll" || this.operator == "srl" || this.operator == "sra") {
@@ -48,26 +51,22 @@ export class DecoderForR extends Decoder {
             operandRD = operands[0];
             operandRT = operands[1];
             SHAMT = operands[2];
+            if (((SHAMT == "" || !patt3.test(SHAMT))) || (patt3.test(SHAMT) && +SHAMT >= 32)) {
+                this.errMsg = this.errMsg + "Error 209: Invalid shift amount. -- " + this.getIns() + "\n";
+                return false;
+            }
         } else {
             let operands: string[] = this.ins.substring(posOfSpace + 1, this.ins.length).split(",", 3);
             operandRD = operands[0];
             operandRS = operands[1];
-            operandRT = operands[2]; 
+            operandRT = operands[2];
         }
 
-        let patt1 = /^[0-9]+$/;
-        let patt2 = /^[a-z0-9]+$/;
-        let patt3 = /^(\+)?\d+$/;
 
-        if ((!(SHAMT == "" || patt3.test(SHAMT))) || (patt3.test(SHAMT) && +SHAMT >= 32)) {
-            this.errMsg = this.errMsg + "Error 209: Invalid shift amount. -- " + this.getIns() + "\n";
-            return false;
-        }
- 
         let operands: Array<string> = [operandRS, operandRT, operandRD];
         let i: number;
         for (i = 0; i < operands.length; i++) {
-            let operand: string = operands[i].substring(1,operands[i].length);
+            let operand: string = operands[i].substring(1, operands[i].length);
             if (operands[i].charAt(0) == "$" && patt1.test(operand) && +operand > 31) {
                 this.errMsg = this.errMsg + "Error 210: Invalid operand. -- " + this.getIns() + "\n";
                 return false;

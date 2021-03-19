@@ -936,7 +936,6 @@ export class Assembler {
                 let actualNumComma = ins.split(",").length - 1;
                 if (expectedNumComma == undefined) {
                     this.errMsg = this.errMsg + "Error 331: Instruction unrecognized. -- " + this.basic.get(i) + "\n";
-                    console.log("Error 1 in Assembler. Instruction unrecognized.");
                     return false;
                 } else if (expectedNumComma == actualNumComma) {
                     let type: string | undefined = MapForInsType.getMap().get(operator);
