@@ -173,7 +173,15 @@ export class Assembler {
     }
 
     /**
-     * Set the sources using the raw input from the user.
+     * Method for getting the raw input from the user.
+     * @returns an array of the raw input from the user.
+     */
+    public getSources(): Array<string> {
+        return this.sources;
+    }
+
+    /**
+     * Set the sources using the raw input from the user and deal with MIPS comments which start with a hash sign.
      * @param input the raw input from the user.
      * @returns void
      */
@@ -181,7 +189,6 @@ export class Assembler {
         this.sources = input.split("\n");
         let i: number;
         
-        //Deal with MIPS comments which start with a hash sign
         for (i = 0; i < this.sources.length; i++) {
             this.sources[i] = this.sources[i].trim();
             if (this.sources[i].search("#") != -1) {
@@ -303,9 +310,7 @@ export class Assembler {
                     this.errMsg = this.errMsg + "Error 303: Invalid label. -- " + this.sourceIns[i] + "\n";
                     return false;
                 } else if (this.sourceIns[i].substring(posOfColon + 1, this.sourceIns[i].length) != "") {
-                    //console.log(this.sourceIns);
-                    this.sourceIns.splice(i, 1, label + ":", this.sourceIns[i].substring(posOfColon + 1, this.sourceIns[i].length));
-                    //console.log(this.sourceIns);
+                    this.sourceIns.splice(i, 1, label + ":", this.sourceIns[i].substring(posOfColon + 1, this.sourceIns[i].length).trim());
                 }
             }
         }
@@ -328,6 +333,7 @@ export class Assembler {
         let pattLabel = /^[A-Za-z0-9._]+$/;
         let pattnumber = /[0-9]/;
         let resultData: ArrayList<string> = new ArrayList<string>();
+        let posOfSpace: number;
         for (i = 0; i < this.data.size(); i++) {
             posOfColon = this.data.get(i).toString().indexOf(":");
             if (posOfColon != -1) {
@@ -393,8 +399,13 @@ export class Assembler {
                         continue;
                     }
                 } else {
-                    this.errMsg = this.errMsg + "Error 336: Invalid instruction. -- " + this.data.get(i) + "\n";
-                    return false;
+                    posOfSpace = this.data.get(i).toString().indexOf(" ");
+                    if (this.data.get(i).toString().substring(0, posOfSpace) == ".word" || this.data.get(i).toString().substring(0, posOfSpace) == ".byte" || this.data.get(i).toString().trim().substring(0, 6) == ".ascii" || this.data.get(i).toString().substring(0, 7) == ".asciiz") {
+                        resultData.add(this.data.get(i).toString().trim());
+                    } else {
+                        this.errMsg = this.errMsg + "Error 336: Invalid instruction. -- " + this.data.get(i) + "\n";
+                        return false;
+                    }
                 }
             }
         }
@@ -845,6 +856,9 @@ export class Assembler {
                     jumpLabel = this.sourceIns[i].substring(this.sourceIns[i].lastIndexOf(",") + 1, this.sourceIns[i].length).trim();
                     if (mapForLabel.has(jumpLabel)) {
                         relativeJump = +(mapForCounter.get(jumpLabel) + "") - instructionCounter - 1;
+                        if (relativeJump < 0) {
+                            relativeJump++;
+                        }
                         if (operator == "beq") {
                             this.sourceIns[i] = "beq" + this.sourceIns[i].substring(posOfSpace, this.sourceIns[i].lastIndexOf(",") + 1) + relativeJump.toFixed();
                         } else {

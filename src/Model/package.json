@@ -8,7 +8,7 @@
     "coverage": "jest --coverage",
     "tsc": "tsc",
     "browserify": "browserify",
-    "unpack":"browser-unpack"
+    "unpack": "browser-unpack"
   },
   "keywords": [],
   "author": "",
