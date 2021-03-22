@@ -692,6 +692,7 @@ export class singleCycleCpu{
     DMOut:string|undefined = init_bits(32);
     ALUAdderB:string = init_bits(32);
     signExtendOUT:string = init_bits(32);
+    assembler:Assembler = Assembler.getAssembler();
 
     /**
      * The constructor initializes all the fields
@@ -1037,6 +1038,7 @@ export class singleCycleCpu{
                 }
             }
             if (asciiMap.size != 0){
+
                 this.asciiString = asciiMap;
                 for (let key of asciiMap.keys()){
                     let tempChars:string = asciiMap.get(key) as string;

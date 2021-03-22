@@ -383,7 +383,7 @@ export class Memory{
             data1 = init_bits(32);
         }
         
-        data1 = data1.slice(0,8*(3-position)) + datum + data1.slice(8*(3-position)+8,32);
+        data1 = data1.slice(0,8*(3-position)) + datum[1] + data1.slice(8*(3-position)+8,32);
         this.MemoryArray[staticDataIndex] = data1;
         this.staticData.set(decToUnsignedBin32(staticDataIndex*4),data1);
     }
