@@ -524,10 +524,11 @@ export class Assembler {
                     } else {
                         if (dataIns == ".ascii") {
                             this.mapForAscii.set(address, insAfterLabel.substring(posOfSpace + 2, insAfterLabel.length - 1));
-                            address = (+address + insAfterLabel.substring(posOfSpace + 2, ins.length - 1).length).toFixed();
+                            address = (+address + insAfterLabel.substring(posOfSpace + 2, insAfterLabel.length - 1).length).toFixed();
+                            console.log(insAfterLabel.substring(posOfSpace + 2, insAfterLabel.length - 1));
                         } else {
                             this.mapForAscii.set(address, insAfterLabel.substring(posOfSpace + 2, insAfterLabel.length - 1) + "\n");
-                            address = (+address + insAfterLabel.substring(posOfSpace + 2, ins.length - 1).length + 1).toFixed();
+                            address = (+address + insAfterLabel.substring(posOfSpace + 2, insAfterLabel.length - 1).length + 1).toFixed();
                         }
                     }
                 }
