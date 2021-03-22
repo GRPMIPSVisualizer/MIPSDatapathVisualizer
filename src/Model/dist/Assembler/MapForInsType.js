@@ -1,13 +1,27 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MapForInsType = void 0;
+/**
+ * MapForCommaNum stores core instructions and the types of instructions.
+ * The types contain "R", "I", "J" and "P", which type-P is for pseudo instructions.
+ */
 class MapForInsType {
+    /**
+     * Constructor of MapForInsType which is a singleton.
+     */
     constructor() { }
+    /**
+     * Method for getting the singleton map.
+     * @returns a map which the keys instructions and the values are the types of instructions.
+     */
     static getMap() {
         return this.map;
     }
 }
 exports.MapForInsType = MapForInsType;
+/**
+ * The map which the keys are instructions and the values are the types of instructions.
+ */
 MapForInsType.map = new Map([
     ["add", "R"],
     ["addu", "R"],
@@ -29,7 +43,7 @@ MapForInsType.map = new Map([
     ["bne", "I"],
     ["lbu", "I"],
     ["lhu", "I"],
-    ["llOp", "I"],
+    ["ll", "I"],
     ["lui", "I"],
     ["lw", "I"],
     ["ori", "I"],

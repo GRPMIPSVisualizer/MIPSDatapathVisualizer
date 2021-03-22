@@ -91,21 +91,65 @@
 <a name='L32'></a><a href='#L32'>32</a>
 <a name='L33'></a><a href='#L33'>33</a>
 <a name='L34'></a><a href='#L34'>34</a>
-<a name='L35'></a><a href='#L35'>35</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a>
+<a name='L42'></a><a href='#L42'>42</a>
+<a name='L43'></a><a href='#L43'>43</a>
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -120,6 +164,10 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -129,16 +177,36 @@
 import {Instruction} from "./Instruction";
 import {MapForJ} from "./MapForJ";
 &nbsp;
+/**
+ * Class for decoding the instruction of type-J into binary code.
+ * It contains a constructor and a method to get the error message.
+ */
 export class InstructionJ extends Instruction{
 &nbsp;
+    /**
+     * The address of the operand in the type-J instruction.
+     */
     private operandADDRESS: string;
+    /**
+     * The 6 bits opcodes of the type-J instruction.
+     */
     private op: string;
+    /**
+     * The 26 bits binary code of the address in the type-J instruction.
+     */
     private address: string;
+    /**
+     * The string of the error message.
+     */
     private <span class="cstat-no" title="statement not covered" >errMsg: string = "";</span>
 &nbsp;
-    //The ins should be in the form like "j 10000".
-    //There should be only one space between the operator and the first operand, no other space existing.
-    //The address should be represented by a decimal number.
+    /**
+     * Constructor of InstructionJ.
+     * Translate the type-J instruction into binary format.
+     * @param ins the type-J instruction to be translated. It should be in the form like "j 10000".
+     * There should be only one space between the operator and the first operand, no other space existing.
+     * The address should be represented by a decimal number.
+     */
 <span class="fstat-no" title="function not covered" >    constructor(i</span>ns: string) {
 <span class="cstat-no" title="statement not covered" >        super(ins);</span>
         let opBin: string | undefined = <span class="cstat-no" title="statement not covered" >MapForJ.getMap().get(this.operator);</span>
@@ -156,6 +224,10 @@ export class InstructionJ extends Instruction{
 <span class="cstat-no" title="statement not covered" >        this.binIns = this.op + this.address;</span>
     }
 &nbsp;
+    /**
+     * Method for getting the error message of type-J instruction.
+     * @returns a string of error message.
+     */
     public <span class="fstat-no" title="function not covered" >getErrMsg(</span>): string {
 <span class="cstat-no" title="statement not covered" >        return this.errMsg;</span>
     }
@@ -166,7 +238,7 @@ export class InstructionJ extends Instruction{
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed Mar 17 2021 16:08:13 GMT+0800 (中国标准时间)
+                at Mon Mar 22 2021 15:52:31 GMT+0800 (中国标准时间)
             </div>
         </div>
         <script src="../prettify.js"></script>

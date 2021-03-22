@@ -1,13 +1,26 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MapForCommaNum = void 0;
+/**
+ * MapForCommaNum stores core instructions and amount of the commas in the instructions.
+ */
 class MapForCommaNum {
+    /**
+     * Constructor of MapForCommaNum which is a singleton.
+     */
     constructor() { }
+    /**
+     * Method for getting the singleton map.
+     * @returns a map which the keys are instructions and the values are their amount of commas.
+     */
     static getMap() {
         return this.map;
     }
 }
 exports.MapForCommaNum = MapForCommaNum;
+/**
+ * The map which the keys are instructions and the values are their amount of commas.
+ */
 MapForCommaNum.map = new Map([
     ["add", 2],
     ["addu", 2],

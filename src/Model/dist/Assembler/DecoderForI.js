@@ -4,14 +4,32 @@ exports.DecoderForI = void 0;
 const Decoder_1 = require("./Decoder");
 const InstructionI_1 = require("./InstructionI");
 const MapForRegister_1 = require("./MapForRegister");
+/**
+ * Class for validating and decoding the instruction of type-I into binary code.
+ * It contains methods for validating instruction, decoding instruction and getting the error message.
+ */
 class DecoderForI extends Decoder_1.Decoder {
+    /**
+     * Constructor of DecoderForI.
+     */
     constructor() {
         super();
+        /**
+         * The string for error message.
+         */
         this.errMsg = "";
     }
+    /**
+     * Method for getting the decoder for instruction of type-I.
+     * @returns the decoder to validate and decode instructions of type-I.
+     */
     static getDecoder() {
         return this.decoder;
     }
+    /**
+     * Method for validating the instruction of type-I.
+     * @returns true if the instruction is valid, otherwise false.
+     */
     validate() {
         let posOfSpace = this.ins.indexOf(" ");
         let operandRS = "";
@@ -73,7 +91,7 @@ class DecoderForI extends Decoder_1.Decoder {
                 return false;
             }
             else if (operands[i] == "" || (operands[i].charAt(0) == "$" && patt1.test(operand) && +operand <= 31)) {
-                break;
+                continue;
             }
             else if (operands[i].charAt(0) == "$" && patt2.test(operand)) {
                 if (MapForRegister_1.MapForRegister.getMap().has(operand)) {
@@ -98,14 +116,25 @@ class DecoderForI extends Decoder_1.Decoder {
         }
         return true;
     }
+    /**
+     * Method for decoding the instruction of type-I into binary code.
+     * @returns void
+     */
     decode() {
         let instruction = new InstructionI_1.InstructionI(this.ins);
         this.binIns = instruction.getBinIns();
     }
+    /**
+     * Method for getting the error message of invalid instruction of type-I.
+     * @returns a string of error message.
+     */
     getErrMsg() {
         return this.errMsg;
     }
 }
 exports.DecoderForI = DecoderForI;
+/**
+ * The decoder to validate and decode instructions of type-I.
+ */
 DecoderForI.decoder = new DecoderForI();
 //# sourceMappingURL=DecoderForI.js.map

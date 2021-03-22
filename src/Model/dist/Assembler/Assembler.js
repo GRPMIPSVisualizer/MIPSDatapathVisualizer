@@ -10,67 +10,168 @@ const ArrayList_1 = require("./ArrayList");
 const TrimSpace_1 = require("./TrimSpace");
 const DecimalToBinary_1 = require("./DecimalToBinary");
 const BinaryToDecimal_1 = require("./BinaryToDecimal");
+/**
+ * Class Assembler is for an assembler to validate the MIPS code and change the MIPS code into binary code.
+ *
+ * This class contains methods that format the source code, deal with labels and pseudo instructions,
+ * segment data part and text part of the code and change the code into binary code.
+ * It also provides some get methods to get the source code, basic code and maps which store the address and the data stored in the address.
+ *
+ */
 class Assembler {
+    /**
+     * Constructor for Assembler.
+     */
     constructor() {
+        /**
+         * The decoder to validate and decode instructions of type-R.
+         */
         this.decoderForR = DecoderForR_1.DecoderForR.getDecoder();
+        /**
+         * The decoder to validate and decode instructions of type-I.
+         */
         this.decoderForI = DecoderForI_1.DecoderForI.getDecoder();
+        /**
+         * The decoder to validate and decode instructions of type-J.
+         */
         this.decoderForJ = DecoderForJ_1.DecoderForJ.getDecoder();
-        this.sources = []; //The raw input from the user
-        this.data = new ArrayList_1.ArrayList(10); //The contents contained in the .data segment
-        this.sourceInsAL = new ArrayList_1.ArrayList(10); //The contents contained in the .text segment in the form of an ArrayList
-        this.sourceIns = []; //The contents stored in the .text segment in the form of an array
+        /**
+         * The raw input from the user.
+         */
+        this.sources = [];
+        /**
+         * The contents contained in the .data segment.
+         */
+        this.data = new ArrayList_1.ArrayList(10);
+        /**
+         * The contents contained in the .text segment in the form of an ArrayList.
+         */
+        this.sourceInsAL = new ArrayList_1.ArrayList(10);
+        /**
+         * The contents stored in the .text segment in the form of an array.
+         */
+        this.sourceIns = [];
+        /**
+         * The contents of the code which has translated the label to address and expanded pseudo instructions.
+         */
         this.basic = new ArrayList_1.ArrayList(10);
+        /**
+         * The binary code of the MIPS instructions.
+         */
         this.bin = new ArrayList_1.ArrayList(10);
+        /**
+         * The map stored labels in the .data segment, which the keys are labels and the values are addresses matched with labels.
+         */
         this.mapForDataLabel = new Map();
+        /**
+         * The map stored .word data in the .data segment, which the keys are addresses and the values are integers stored in addresses.
+         */
         this.mapForWord = new Map();
+        /**
+         * The map stored .ascii and .asciiz data in the .data segment, which the keys are addresses and the values are strings stored in addresses.
+         */
         this.mapForAscii = new Map();
+        /**
+         * The map stored .byte data in the .data segment, which the keys are addresses and the values are integers stored in addresses.
+         */
         this.mapForByte = new Map();
+        /**
+         * The string for error message of invalid MIPS code.
+         */
         this.errMsg = "";
     }
+    /**
+     * Method for getting the assembler to assemble the MIPS code.
+     * @returns an assembler for validating the MIPS code and translating the MIPS code into binary code.
+     */
     static getAssembler() {
         return this.assembler;
     }
+    /**
+     * Method for getting the error message of invalid MIPS code.
+     * @returns a string of error message.
+     */
     getErrMsg() {
         return this.errMsg;
     }
+    /**
+     * Method for getting the map which stores .word data in the .data segment.
+     * @returns a map which the keys are addresses and the values are integers stored in addresses.
+     */
     getMapForWord() {
         return this.mapForWord;
     }
+    /**
+     * Method for getting the map which stores labels in the .data segment.
+     * @returns a map which the keys are labels and the values are addresses matched with labels.
+     */
     getMapForDataLabel() {
         return this.mapForDataLabel;
     }
+    /**
+     * Method for getting the map which stores .ascii and .asciiz data in the .data segment.
+     * @returns a map which the keys are addresses and the values are strings stored in addresses.
+     */
     getMapForAscii() {
         return this.mapForAscii;
     }
+    /**
+     * Method for getting the map which stores .byte data in the .data segment.
+     * @returns a map which the keys are addresses and the values are integers stored in addresses.
+     */
     getMapForByte() {
         return this.mapForByte;
     }
+    /**
+     * Method for getting the .text segment in the form of an ArrayList.
+     * @returns an ArrayList of .text segment.
+     */
     getSourceInsAL() {
         return this.sourceInsAL;
     }
+    /**
+     * Method for getting .text segment in the form of an array.
+     * @returns an array of .text segment.
+     */
     getSourceIns() {
         return this.sourceIns;
     }
+    /**
+     * Method for getting code which has translated the label to address and expanded pseudo instructions in the form of an ArrayList.
+     * @returns an ArrayList of code which has translated the label to address and expanded pseudo instructions.
+     */
     getBasic() {
         return this.basic;
     }
+    /**
+     * Method for getting the code of .data segment in the form of an ArrayList.
+     * @returns an ArrayList of the code of .data segment.
+     */
     getData() {
         return this.data;
     }
+    /**
+     * Method for getting the binary code of the MIPS instructions in the form of an ArrayList.
+     * @returns an ArrayList of the binary code.
+     */
     getBin() {
         return this.bin;
     }
     /**
-     * Set the sources using the raw input from the user.
-     * @param input the raw input from the user
+     * Method for getting the raw input from the user.
+     * @returns an array of the raw input from the user.
+     */
+    getSources() {
+        return this.sources;
+    }
+    /**
+     * Set the sources using the raw input from the user and deal with MIPS comments which start with a hash sign.
+     * @param input the raw input from the user.
+     * @returns void
      */
     setSources(input) {
-        //let result = true;
         this.sources = input.split("\n");
-        //let sourceInsAl: ArrayList<string> = new ArrayList<string>(10);
         let i;
-        //let j: number;
-        //Deal with MIPS comments which start with a hash sign
         for (i = 0; i < this.sources.length; i++) {
             this.sources[i] = this.sources[i].trim();
             if (this.sources[i].search("#") != -1) {
@@ -84,6 +185,7 @@ class Assembler {
      * The contents of the data segment are stored into an ArrayList called data.
      * The contents of the text segment are stored into an ArrayList called sourceInsAL
      * and an Array called sourceIns.
+     * @returns void
      */
     segmentDataText() {
         let i;
@@ -172,6 +274,13 @@ class Assembler {
             this.sourceIns[i] = this.sourceInsAL.get(i).toString();
         }
     }
+    /**
+     * Divide the label and instruction into two lines if they are in the same line in source instructions.
+     * The function operates the Array called sourceIns directly.
+     * If a label is valid and followed by an instruction which in the same line,
+     * the element is separated into two elements in the array which one is the label and the other is the next instruction.
+     * @returns true if there is no invalid labels and separate successfully, false if there are invalid labels.
+     */
     separateLabelIns() {
         let result = true;
         let posOfColon;
@@ -188,24 +297,29 @@ class Assembler {
                     return false;
                 }
                 else if (this.sourceIns[i].substring(posOfColon + 1, this.sourceIns[i].length) != "") {
-                    console.log(this.sourceIns);
-                    this.sourceIns.splice(i, 1, label + ":", this.sourceIns[i].substring(posOfColon + 1, this.sourceIns[i].length));
-                    console.log(this.sourceIns);
+                    this.sourceIns.splice(i, 1, label + ":", this.sourceIns[i].substring(posOfColon + 1, this.sourceIns[i].length).trim());
                 }
             }
         }
         return result;
     }
+    /**
+     * Format the data segment.
+     * The function puts the label and the data layout instruction in the same line with a space interval if they do not follow this format
+     * and puts the data layout instruction and the data in the same line with a space interval if they do not follow this format.
+     * The formatted code is stored back to the ArrayList called data.
+     * @returns true if the data segment is formatted successfully and false if there are invalid labels or instructions.
+     */
     formatData() {
         let result = true;
         let i;
         let posOfColon;
-        let posOfQuo;
         let label;
         let patt = /^[\s]$/;
         let pattLabel = /^[A-Za-z0-9._]+$/;
         let pattnumber = /[0-9]/;
         let resultData = new ArrayList_1.ArrayList();
+        let posOfSpace;
         for (i = 0; i < this.data.size(); i++) {
             posOfColon = this.data.get(i).toString().indexOf(":");
             if (posOfColon != -1) {
@@ -285,15 +399,15 @@ class Assembler {
                     }
                 }
                 else {
-                    this.errMsg = this.errMsg + "Error 336: Invalid instruction. -- " + this.data.get(i) + "\n";
-                    return false;
+                    posOfSpace = this.data.get(i).toString().indexOf(" ");
+                    if (this.data.get(i).toString().substring(0, posOfSpace) == ".word" || this.data.get(i).toString().substring(0, posOfSpace) == ".byte" || this.data.get(i).toString().trim().substring(0, 6) == ".ascii" || this.data.get(i).toString().substring(0, 7) == ".asciiz") {
+                        resultData.add(this.data.get(i).toString().trim());
+                    }
+                    else {
+                        this.errMsg = this.errMsg + "Error 336: Invalid instruction. -- " + this.data.get(i) + "\n";
+                        return false;
+                    }
                 }
-                // posOfQuo = this.data.get(i).toString().indexOf("\"");
-                // if (posOfQuo != -1) {
-                //     resultData.add(this.data.get(i).toString().substring(0, posOfQuo).trim() + " " + this.data.get(i).toString().substring(posOfQuo, this.data.get(i).toString().length).trim());
-                //     continue;
-                // }
-                // resultData.add(this.data.get(i).toString().trim());
             }
         }
         for (i = 0; i < resultData.size(); i++) {
@@ -307,6 +421,14 @@ class Assembler {
         }
         return result;
     }
+    /**
+     * Store the data in the data segment into maps.
+     * The labels in the data segment are stored as keys and the addresses matched with the labels are stored as values in the map called mapForDataLabel.
+     * The addresses of the data stored by .word instructions are stored as keys and the data stored in this address is stored as values in the map called mapForWord.
+     * The addresses of the data stored by .byte instructions are stored as keys and the data stored in this address is stored as values in the map called mapForByte.
+     * The addresses of string are stored as keys and the string stored in this address is stored as values in the map called mapForAscii.
+     * @returns true if all data is stored successfully and false if there is invalid data type or the data is out of range.
+     */
     storeData() {
         let result = true;
         let i;
@@ -544,6 +666,10 @@ class Assembler {
         }
         return result;
     }
+    /**
+     * Check whether there are labels with the same name or not.
+     * @returns true if there is no labels with the same name, otherwise false.
+     */
     checkLabel() {
         let result = true;
         let i;
@@ -569,7 +695,7 @@ class Assembler {
     }
     /**
      * Expand the pseudo instructions into basic instructions.
-     * @returns true if there is no error in the pseudo instructions, otherwise false
+     * @returns true if there is no error in the pseudo instructions, otherwise false.
      */
     expandPseudo() {
         let i;
@@ -702,10 +828,14 @@ class Assembler {
         this.sourceIns = temp;
         return result;
     }
+    /**
+     * Translate the labels in the "j", "jal", "beq" and "bne" instructions into addresses or offset.
+     * The translated instructions are stored in an ArrayList called basic.
+     * @returns true if all labels in the four types of instructions are translated successfully, false if there are invalid labels.
+     */
     translateLabel() {
         let result = true;
         let i;
-        let j;
         let label;
         let mapForLabel = new Map();
         let address = "4194304";
@@ -751,6 +881,7 @@ class Assembler {
         instructionCounter = 0;
         for (i = 0; i < this.sourceIns.length; i++) {
             if (this.sourceIns[i] == "" || patt.test(this.sourceIns[i]) || this.sourceIns[i].substring(this.sourceIns[i].length - 1, this.sourceIns[i].length) == ":") {
+                instructionCounter++;
                 continue;
             }
             else {
@@ -775,6 +906,9 @@ class Assembler {
                     jumpLabel = this.sourceIns[i].substring(this.sourceIns[i].lastIndexOf(",") + 1, this.sourceIns[i].length).trim();
                     if (mapForLabel.has(jumpLabel)) {
                         relativeJump = +(mapForCounter.get(jumpLabel) + "") - instructionCounter - 1;
+                        if (relativeJump < 0) {
+                            relativeJump++;
+                        }
                         if (operator == "beq") {
                             this.sourceIns[i] = "beq" + this.sourceIns[i].substring(posOfSpace, this.sourceIns[i].lastIndexOf(",") + 1) + relativeJump.toFixed();
                         }
@@ -793,6 +927,12 @@ class Assembler {
         }
         return result;
     }
+    /**
+     * Preprocess the instructions before assembling.
+     * Methods called "segmentDataText", "checkLabel", "formatData", "separateLabelIns", "storeData", "expandPseudo" and "translateLabel"
+     * are executed one by one.
+     * @returns true if all methods in preprocess return true, otherwise false.
+     */
     preprocess() {
         this.segmentDataText();
         if (this.checkLabel()) {
@@ -827,6 +967,28 @@ class Assembler {
             return false;
         }
     }
+    /**
+     * Clear all fields in Assembler.
+     * @returns void
+     */
+    refresh() {
+        this.sources = [];
+        this.data.clear();
+        this.sourceInsAL.clear();
+        this.sourceIns = [];
+        this.basic.clear();
+        this.bin.clear();
+        this.mapForDataLabel.clear();
+        this.mapForWord.clear();
+        this.mapForAscii.clear();
+        this.mapForByte.clear();
+        this.errMsg = "";
+    }
+    /**
+     * Assemble the instructions stored in the ArrayList called basic and translate instructions into a string of binary code.
+     * The binary code is stored in the ArrayList called bin.
+     * @returns true if all the instructions are valid and translated into binary code successfully, otherwise false.
+     */
     assemble() {
         let result = true;
         let i;
@@ -843,7 +1005,6 @@ class Assembler {
                 let actualNumComma = ins.split(",").length - 1;
                 if (expectedNumComma == undefined) {
                     this.errMsg = this.errMsg + "Error 331: Instruction unrecognized. -- " + this.basic.get(i) + "\n";
-                    console.log("Error 1 in Assembler. Instruction unrecognized.");
                     return false;
                 }
                 else if (expectedNumComma == actualNumComma) {
@@ -907,5 +1068,8 @@ class Assembler {
     }
 }
 exports.Assembler = Assembler;
+/**
+ * Assembler for validating the MIPS code and translating the MIPS code into binary code.
+ */
 Assembler.assembler = new Assembler();
 //# sourceMappingURL=Assembler.js.map

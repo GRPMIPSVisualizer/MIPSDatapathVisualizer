@@ -10,19 +10,58 @@ import { Memory } from "./Memory";
 import { _32BitsRegister } from "./Register";
 import { Signal, signalType } from "./Signal";
 import { Wired } from "./Wired";
-
+/**
+ * A register File is an array of 32 registers<br/>
+ * This class is the abstract model of a real register file
+ */
 export class RegisterFile extends Wired{
+    /**
+     * the readNumber and writeNumber bitWidth
+     */
     private static bitWidth = 5;
+    /**
+     * the number of register that will be read in outDataA in the form of 5bit binary string
+     */
     private readNumberA:string;
+    /**
+     * the number of register that will be read in outDataA in the form of 5bit binary string
+     */
     private readNumberB:string;
+    /**
+     * the number of register that will be write in the form of 5bit binary string
+     */
     private writeNumber:string;
+    /**
+     * the data that will be writtem into designated register.
+     */
     private writeData:string;
+    /**
+     * the write enable signal
+     */
     private writeEnable:Signal;
+    /**
+     * clock signal of all registers
+     */
     private clockSignal:Signal;
+    /**
+     * the data being read at this outPin
+     */
     private outDataA:string = "";
+    /**
+     * the data being read at this outPin
+     */
     private outDataB:string = "";
+    /**
+     * The write mux decides which bits to read in.
+     */
     private WriteMux:Mux32;
+    /**
+     * An array of 32 registers. The data is stored here
+     */
     private registers:_32BitsRegister[] = new Array<_32BitsRegister>();
+    /**
+     * initialize all fields of this class
+     */
     constructor(){
         super();
         this.readNumberA = init_bits(RegisterFile.bitWidth);
@@ -55,42 +94,72 @@ export class RegisterFile extends Wired{
         this.outDataB = this.Mux32Way32(this.readNumberB,data);
     }
 
+    /**
+     * Store data at the register indicates by index.<br/>
+     * @param index the index of register that will store new data
+     * @param datum the datum being stored
+     */
     public storeADataAt(index:number,datum:string):void{
         this.registers[index].setInpin32(datum);
         this.registers[index].changeClockSignal();
         this.registers[index].changeClockSignal();
     }
 
+    /**
+     * get the outPinA
+     * @returns the value of outPinA
+     */
     public getOutDataA():string{
         return this.outDataA;
     }
 
+    /**
+     * get the outPinB
+     * @returns the value of outPinB
+     */
     public getOutDataB():string{
         return this.outDataB;
     }
-
+    /**
+     * set write enable signal
+     * @param siganl the new signal
+     */
     public setWriteEnable(siganl:signalType):void{
         this.writeEnable.setSignal(siganl);
         this.registerWrite();
     }
 
+    /**
+     * set data being written into register
+     * @param data the data that will be stored in the register
+     */
     public setWriteData(data:string):void{
         this.writeData = data;
         this.registerWrite();
     }
 
+    /**
+     * set register destination signal
+     * @param signal the new signal
+     */
     public setRegDes(signal:boolean){
         this.WriteMux.setSel(bool2num(signal));
         this.writeNumber = this.WriteMux.outPin32.slice(27,32);
     }
 
+    /**
+     * change the value of clock signal
+     */
     public changeClockSignal():void{
         this.clockSignal.changeSiganl();
         this.registers.forEach(register=>{
             register.changeClockSignal();
         });
     }
-
+    /**
+     * set the value of clock signal
+     * @param signal the new signal that will be assigned to clock signal
+     */
     public setClockSignal(signal:signalType):void{
         this.clockSignal.setSignal(signal);
         this.registers.forEach(register=>{
@@ -98,6 +167,10 @@ export class RegisterFile extends Wired{
         });
     }
 
+    /**
+     * memory set the read number A and B's value
+     * @param InsMem the Memory component that will change the value of read number
+     */
     public setInstructionCode(InsMem:Memory):void{
         let InsCode:string = InsMem.getTextOutpin();
         if (InsCode.length != 32)
@@ -109,7 +182,11 @@ export class RegisterFile extends Wired{
         this.registerRead();
     }
 
-
+    /**
+     * set two write index of mux
+     * @param InpinA the first inpin 
+     * @param InpinB the second inpin
+     */
     private setWriteNumber(InpinA:string,InpinB:string):void{
         this.WriteMux.setInpin32A("000000000000000000000000000"+InpinA);
         this.WriteMux.setInpin32B("000000000000000000000000000"+InpinB);
@@ -117,7 +194,9 @@ export class RegisterFile extends Wired{
     }
 
     
-
+    /**
+     * the logic of register read
+     */
     protected registerRead():void{
         let data:string[] = new Array<string>();
         this.registers.forEach(register => {
@@ -127,6 +206,10 @@ export class RegisterFile extends Wired{
         this.outDataB = this.Mux32Way32(this.readNumberB,data);
     }
 
+    /**
+     * the logic of register write
+     * @returns nothing
+     */
     private registerWrite():void{
         this.registers.forEach(register=>{
             register.resetInput();
@@ -141,6 +224,12 @@ export class RegisterFile extends Wired{
         this.registers[index].setInpin32(this.writeData);
     }
 
+    /**
+     * mux32way32
+     * @param index the 5-bits selector 
+     * @param data the 32 input data of mux32way32
+     * @returns 
+     */
     private Mux32Way32(index:string,data:string[]):string{
         let Muxes:number[][] = new Array<number[]>();
         Muxes.push(Mux8Way32.Mux8Way32(data.slice(0,8),index.slice(2,5)));
@@ -162,10 +251,18 @@ export class RegisterFile extends Wired{
         return out32;
     }
 
+    /**
+     * get all the registers
+     * @returns all registers
+     */
     public getRegisters():_32BitsRegister[]{
         return this.registers;
     }
 
+    /**
+     * get the write number
+     * @returns a binary string represents write number
+     */
     public getWriteNumber():string{
         return this.writeNumber;
     }
