@@ -1,28 +1,11 @@
 "use strict";
-// export function stringToIntArray(binaryString:string):number[]{
-//     let intArray:number[] = [];
-//     for(var i = 0;i < binaryString.length;++i){
-//         intArray.push(parseInt(binaryString.charAt(i)));
-//     }
-//     return intArray;
-// } 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.binaryToDecimal = void 0;
-// export function bin2dec(bin:string,isUnsigned:boolean):number{
-//     if (bin.length != 16)
-//         throw Error("binary length is longer than 32!");
-//     let binArr:number[] = stringToIntArray(bin);
-//     let retNum:number = 0;
-//     if (isUnsigned)
-//         retNum += binArr[0]*Math.pow(2,31);
-//     else{
-//         retNum += -binArr[0]*Math.pow(2,31);
-//     }
-//     for (let i:number=1;i<bin.length;++i){
-//         retNum += binArr[i]*Math.pow(2,(31-i));
-//     }
-//     return retNum;
-// }
+/**
+ * Translate a 16-bits binary number into decimal number.
+ * @param bin a string of a binary number(must be 16-bits) to be translated.
+ * @returns a number which is the decimal format of the binary number, or 0 if the binary number is not 16-bits.
+ */
 function binaryToDecimal(bin) {
     let retNum = 0;
     if (bin.length != 16) {

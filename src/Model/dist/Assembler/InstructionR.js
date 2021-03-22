@@ -4,12 +4,23 @@ exports.InstructionR = void 0;
 const DecimalToBinary_1 = require("./DecimalToBinary");
 const Instruction_1 = require("./Instruction");
 const MapForR_1 = require("./MapForR");
+/**
+ * Class for decoding the instruction of type-R into binary code.
+ * It contains a constructor and a method to get the error message.
+ */
 class InstructionR extends Instruction_1.Instruction {
-    //The ins should be in the form like "add $8,$16,$17".
-    //There should be only one space between the operator and the first operand, no other space existing.
-    //The register should be in dollar sign and a number.
+    /**
+     * Constructor of InstructionR.
+     * Translate the type-R instruction into binary format.
+     * @param ins the type-R instruction to be translated. It should be in the form like "add $8,$16,$17".
+     * There should be only one space between the operator and the first operand, no other space existing.
+     * The register should be in dollar sign and a number.
+     */
     constructor(ins) {
         super(ins);
+        /**
+         * The string of the error message.
+         */
         this.errMsg = "";
         this.op = "000000";
         let functBin = MapForR_1.MapForR.getMap().get(this.operator);
@@ -52,6 +63,10 @@ class InstructionR extends Instruction_1.Instruction {
         }
         this.binIns = this.op + this.rs + this.rt + this.rd + this.shamt + this.funct;
     }
+    /**
+     * Method for getting the error message of type-R instruction.
+     * @returns a string of error message.
+     */
     getErrMsg() {
         return this.errMsg;
     }

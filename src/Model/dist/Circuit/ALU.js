@@ -9,11 +9,41 @@ const NOT32_1 = require("../Logic/NOT32");
 const Mux4Way32_1 = require("../Conponent/Mux4Way32");
 const ExceptionReporter_1 = require("./ExceptionReporter");
 const BItsGenerator_1 = require("../Library/BItsGenerator");
+/**
+ * Class ALU simulates some basic function of ALU. This is a core component for building a CPU.<br/>
+ * 8 functions are fulfilled in this ALU:<br/>
+ * or<br/>
+ * and<br/>
+ * add32<br/>
+ * sub32<br/>
+ * set on less than<br/>
+ * nor<br/>
+ * shiftLeftLogic<br/>
+ * shiftRightLogic
+ */
 class ALU {
+    /**
+     * The Constructor initializes {@link inPin32A} and {@link inPin32B} and {@link controlBits}
+     * @param inPinA the binary string that will assigned to {@link inPin32A}
+     * @param inPinB the binary string that will assigned to {@link inPin32B}
+     * @param control the 4-bits string that will assigned to {@link controlBits}
+     */
     constructor(inPinA, inPinB, control) {
+        /**
+         * As the name indicates, this is 32bits outPin of the ALU
+         */
         this.outPin32 = "";
+        /**
+         * This field records the shamt bits of a machine code
+         */
         this.shamt = BItsGenerator_1.init_bits(5);
+        /**
+         * This is a boolean value that indicates whether the instruction is bne
+         */
         this.bne = false;
+        /**
+         * This is a boolean value which indicates whether the overflow should be reported.
+         */
         this.reportOverflow = false;
         this.inPin32A = inPinA;
         this.inPin32B = inPinB;
@@ -24,9 +54,18 @@ class ALU {
         this.Adder32 = new Adder_1.Adder(inPinA, inPinB);
         this.outPin32 = StringHandle_1.decToUnsignedBin32(0);
     }
+    /**
+     * get {@link outPin32}
+     * @returns binary string that stored in outPin32
+     */
     getOutPin32() {
         return this.outPin32;
     }
+    /**
+     * this method is the most critical method in this class.<br/>
+     * It simulates the workflow of ALU and set {@link outPin32} and other boolean variables according to inputs<br/>
+     * @returns nothing
+     */
     ALU() {
         if (this.controlBits == "1111" || this.controlBits == "1110" || this.controlBits == "1101") {
             let right = (this.controlBits[3] == '0') ? false : true;
@@ -106,12 +145,23 @@ class ALU {
         this.setOutPin(StringHandle_1.intArrayToString(Mux4Way32_1.Mux4Way32.Mux4Way32(inpin, [control[2], control[3]])));
         this.detectZero();
     }
+    /**
+     * This method add an error message to {@link ExceptionReporter} if {@link isOverflow} is true<br/>
+     * @returns nothing
+     */
     reportOverflowException() {
         if (!this.isOverflow)
             return;
         let exceptionReporter = ExceptionReporter_1.ExceptionReporter.getReporter();
         exceptionReporter.addException("ALU Overflow Exception!");
     }
+    /**
+     * This method detect overflow and set {@link isOverflow} according to last bit of {@link inPin32A} and {@link inPin32B} as well as the output of {@link Adder32}
+     * @param lastPinA last bit of {@link inPin32A}
+     * @param lastPinB last bit of {@link inPin32B}
+     * @param lastOut last bit of output of {@link Adder32}
+     * @param carry carry?
+     */
     overflowDetect(lastPinA, lastPinB, lastOut, carry) {
         // console.log(lastPinA,lastPinB,!lastOut);
         if (this.isUnsign) {
@@ -131,6 +181,11 @@ class ALU {
             }
         }
     }
+    /**
+     * detect whether the {@link outPin32} is zero
+     * if it is zero, set {@link isZero} to true
+     * @returns nothing
+     */
     detectZero() {
         for (let i = 0; i < this.outPin32.length; ++i) {
             if (parseInt(this.outPin32.charAt(i)) != 0) {
@@ -140,30 +195,60 @@ class ALU {
         }
         this.isZero = true;
     }
+    /**
+     * reset both {@link inPin32A} and {@link inPin32B} and {@link controlBits}
+     * @param inPinA new binary string that will assigned to {@link inPin32A}
+     * @param inPinB new binary string that will assigned to {@link inPin32B}
+     * @param controlBits new 4-bits control string that will assigned to {@link controlBits}
+     */
     newSignal(inPinA, inPinB, controlBits) {
         this.inPin32A = inPinA;
         this.inPin32B = inPinB;
         this.controlBits = controlBits;
         this.ALU();
     }
+    /**
+     * assign a new 4-bits control string to {@link controlBits}
+     * @param conBits
+     */
     setControlBits(conBits) {
         this.controlBits = conBits;
         this.ALU();
     }
+    /**
+     * assign a new 32-bits binary value to {@link inPin32A}
+     * @param inPin
+     */
     setInpinA(inPin) {
         this.inPin32A = inPin;
         this.ALU();
     }
+    /**
+     * the ALU Mux32 component will watch the change of its outPin32 and will set {@link inPin32B} accordingly.
+     * @param MUX the ALU Mux32 component
+     */
     setMuxInpinB(MUX) {
         this.inPin32B = MUX.outPin32;
         this.ALU();
     }
+    /**
+     * assign a new value to {@link outPin32}
+     * @param outPin
+     */
     setOutPin(outPin) {
         this.outPin32 = outPin;
     }
+    /**
+     * This method sets {@link reportOverflow}
+     * @param b the boolean number that will be assigned to {@link reportOverflow}
+     */
     setReportOverflow(b) {
         this.reportOverflow = b;
     }
+    /**
+     * This method return a boolean indicates whether overflow should be reported
+     * @returns a boolean indicates whether overflow should be reported
+     */
     getReportOverflow() {
         return this.reportOverflow;
     }

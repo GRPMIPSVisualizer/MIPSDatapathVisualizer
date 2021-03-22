@@ -485,7 +485,8 @@ let shiftJump = [
     // sll $zero,$zero,0
     "00000000000000000000000000000000"
 ];
-sinCycCPU.storeIns(shiftJump);
+let SyscallTest = [];
+sinCycCPU.storeIns(SetLessThan);
 sinCycCPU.runWhole();
 // sinCycCPU.debugPC();
 //# sourceMappingURL=Main.js.map

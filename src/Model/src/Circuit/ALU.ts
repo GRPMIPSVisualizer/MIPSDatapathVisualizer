@@ -8,19 +8,69 @@ import { Mux32 } from "../Conponent/Mux32";
 import { ExceptionReporter } from "./ExceptionReporter";
 import { init_bits } from "../Library/BItsGenerator";
 import { num2bool } from "../Library/BooleanHandler";
+/**
+ * Class ALU simulates some basic function of ALU. This is a core component for building a CPU.<br/>
+ * 8 functions are fulfilled in this ALU:<br/>
+ * or<br/>
+ * and<br/>
+ * add32<br/>
+ * sub32<br/>
+ * set on less than<br/>
+ * nor<br/>
+ * shiftLeftLogic<br/>
+ * shiftRightLogic
+ */
 export class ALU{
+    /**
+     * As the name indicates, this is 32bits inPinA of the ALU
+     */
     protected inPin32A:string;
+    /**
+     * As the name indicates, this is 32bits inPinB of the ALU
+     */
     protected inPin32B:string;
+    /**
+     * As the name indicates, this is 32bits outPin of the ALU
+     */
     private outPin32:string = "";
+    /**
+     * As the name indicates, this is control bits for the ALU
+     */
     private controlBits:string;
+    /**
+     * As the name indicates, this is a 32bits adder object
+     */
     private Adder32:Adder;
+    /**
+     * This is a boolean value that indicates whether the ALU is doing unsign operation
+     */
     isUnsign:boolean;
+    /**
+     * This field records the shamt bits of a machine code
+     */
     protected shamt:string = init_bits(5);
+    /**
+     * This is a boolean value that indicates whether the outpin is 0
+     */
     isZero:boolean;
+    /**
+     * This is a boolean value that indicates whether the outpin is overflow
+     */
     isOverflow:boolean;
+    /**
+     * This is a boolean value that indicates whether the instruction is bne
+     */
     bne:boolean = false;
+    /**
+     * This is a boolean value which indicates whether the overflow should be reported.
+     */
     private reportOverflow:boolean = false;
-
+    /**
+     * The Constructor initializes {@link inPin32A} and {@link inPin32B} and {@link controlBits}
+     * @param inPinA the binary string that will assigned to {@link inPin32A}
+     * @param inPinB the binary string that will assigned to {@link inPin32B}
+     * @param control the 4-bits string that will assigned to {@link controlBits}
+     */
     constructor(inPinA:string,inPinB:string,control:string){
         this.inPin32A = inPinA;
         this.inPin32B = inPinB;
@@ -32,11 +82,19 @@ export class ALU{
         this.outPin32 = decToUnsignedBin32(0);
         
     }
-
+    /**
+     * get {@link outPin32}
+     * @returns binary string that stored in outPin32
+     */
     public getOutPin32():string{
         return this.outPin32;
     }
 
+    /**
+     * this method is the most critical method in this class.<br/>
+     * It simulates the workflow of ALU and set {@link outPin32} and other boolean variables according to inputs<br/>
+     * @returns nothing
+     */
     protected ALU():void{
         if (this.controlBits == "1111" || this.controlBits == "1110" || this.controlBits == "1101"){
             let right:boolean = (this.controlBits[3] == '0')?false:true;
@@ -119,13 +177,23 @@ export class ALU{
         
     }
 
+    /**
+     * This method add an error message to {@link ExceptionReporter} if {@link isOverflow} is true<br/>
+     * @returns nothing
+     */
     private reportOverflowException():void{
         if (!this.isOverflow)
             return;
         let exceptionReporter = ExceptionReporter.getReporter();
         exceptionReporter.addException("ALU Overflow Exception!");
     }
-
+    /**
+     * This method detect overflow and set {@link isOverflow} according to last bit of {@link inPin32A} and {@link inPin32B} as well as the output of {@link Adder32}
+     * @param lastPinA last bit of {@link inPin32A}
+     * @param lastPinB last bit of {@link inPin32B}
+     * @param lastOut last bit of output of {@link Adder32}
+     * @param carry carry?
+     */
     private overflowDetect(lastPinA:number,lastPinB:number,lastOut:number,carry:number):void{
         // console.log(lastPinA,lastPinB,!lastOut);
         if (this.isUnsign){
@@ -142,7 +210,11 @@ export class ALU{
             }
         }
     }
-
+    /**
+     * detect whether the {@link outPin32} is zero
+     * if it is zero, set {@link isZero} to true
+     * @returns nothing
+     */
     protected detectZero():void{
         for (let i:number = 0;i < this.outPin32.length;++i){
             if (parseInt(this.outPin32.charAt(i)) != 0){
@@ -152,38 +224,62 @@ export class ALU{
         }
         this.isZero = true;
     }
-
+    /**
+     * reset both {@link inPin32A} and {@link inPin32B} and {@link controlBits}
+     * @param inPinA new binary string that will assigned to {@link inPin32A}
+     * @param inPinB new binary string that will assigned to {@link inPin32B}
+     * @param controlBits new 4-bits control string that will assigned to {@link controlBits}
+     */
     public newSignal(inPinA:string,inPinB:string,controlBits:string):void{
         this.inPin32A = inPinA;
         this.inPin32B = inPinB;
         this.controlBits = controlBits;
         this.ALU();
     }
-
+    /**
+     * assign a new 4-bits control string to {@link controlBits}
+     * @param conBits 
+     */
     public setControlBits(conBits:string):void{
         this.controlBits = conBits;
         this.ALU();
     }
-
+    /**
+     * assign a new 32-bits binary value to {@link inPin32A}
+     * @param inPin 
+     */
     public setInpinA(inPin:string):void{
         this.inPin32A = inPin;
         this.ALU();
     }
-
+    /**
+     * the ALU Mux32 component will watch the change of its outPin32 and will set {@link inPin32B} accordingly.
+     * @param MUX the ALU Mux32 component
+     */
     public setMuxInpinB(MUX:Mux32):void{
         this.inPin32B = MUX.outPin32;
         this.ALU();
     }
-
+    /**
+     * assign a new value to {@link outPin32}
+     * @param outPin 
+     */
     protected setOutPin(outPin:string):void{
         this.outPin32 = outPin;
     }
 
-
+    /**
+     * This method sets {@link reportOverflow}
+     * @param b the boolean number that will be assigned to {@link reportOverflow}
+     */
     public setReportOverflow(b:boolean):void{
         this.reportOverflow = b;
     }
-
+    
+    /**
+     * This method return a boolean indicates whether overflow should be reported
+     * @returns a boolean indicates whether overflow should be reported
+     */
     public getReportOverflow():boolean{
         return this.reportOverflow;
     }

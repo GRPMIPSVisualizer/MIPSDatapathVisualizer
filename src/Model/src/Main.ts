@@ -560,6 +560,6 @@ let shiftJump:string[] = [
 
 let SyscallTest = [];
 
-sinCycCPU.storeIns(shiftJump);
+sinCycCPU.storeIns(SetLessThan);
 sinCycCPU.runWhole();
 // sinCycCPU.debugPC();

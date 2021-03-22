@@ -1,13 +1,26 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MapForRegister = void 0;
+/**
+ * MapForRegister stores 32 registers and their indices.
+ */
 class MapForRegister {
+    /**
+     * Constructor of MapForRegister which is a singleton.
+     */
     constructor() { }
+    /**
+     * Method for getting the singleton map.
+     * @returns a map which the keys are registers and the values are their indices.
+     */
     static getMap() {
         return this.map;
     }
 }
 exports.MapForRegister = MapForRegister;
+/**
+ * The map which the keys are registers and the values are their indices.
+ */
 MapForRegister.map = new Map([
     ["zero", "0"],
     ["at", "1"],

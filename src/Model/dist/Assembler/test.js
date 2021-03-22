@@ -270,4 +270,12 @@ str = "main: ";
 console.log(str.trim().endsWith(":"));
 console.log("-------------------------");
 console.log(BinaryToDecimal_1.binaryToDecimal("0000000000000010"));
+console.log("-------------------------");
+let decoder1 = DecoderForI_1.DecoderForI.getDecoder();
+decoder1.setIns("addiu $t1,$8,10");
+console.log(decoder1.validate());
+decoder1.decode();
+console.log(decoder1.getBinIns());
+// 001000   10010   10001   0000000000011111
+// 001001   01001   01001   0000000000001010
 //# sourceMappingURL=test.js.map

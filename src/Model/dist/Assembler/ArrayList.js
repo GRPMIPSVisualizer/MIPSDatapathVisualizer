@@ -3,32 +3,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ArrayList = void 0;
 class ArrayList {
     constructor(initialCapacity) {
-        // The array used to store the elements
+        /**
+         * The array used to store the elements.
+         */
         this.elementData = [];
-        // The number of elements stored in the ArrayList
+        /**
+         * The number of elements stored in the ArrayList.
+         */
         this.sizeNum = 0;
         if (typeof initialCapacity === 'number') {
-            //initialize the capacity of the ArrayList
             if (initialCapacity < 0) {
                 throw new Error("is no arrayList index : " + initialCapacity);
             }
             this.elementData = new Array(initialCapacity);
         }
         else {
-            //initialize the capacity of the ArrayList
             this.elementData = new Array(10);
         }
     }
     add(arg0, arg1) {
         if (typeof arg0 === 'number') {
-            //add an element using index
             this.ensureExplicitCapacity();
             this.rangeCheck(arg0);
             this.elementData.splice(arg0, 0, arg1);
             this.sizeNum++;
         }
         else {
-            //
             this.ensureExplicitCapacity();
             this.elementData[this.sizeNum] = arg0;
             this.sizeNum++;
@@ -37,7 +37,7 @@ class ArrayList {
     /**
      * Get the object specified by the index
      * @param index
-     * @return Object
+     * @returns Object
      */
     get(index) {
         this.rangeCheck(index);
@@ -47,7 +47,7 @@ class ArrayList {
      * Update the object at the specified index
      * @param index
      * @param Object
-     * @return void
+     * @returns void
      */
     update(index, Object) {
         this.rangeCheck(index);
@@ -73,8 +73,17 @@ class ArrayList {
         }
     }
     /**
+     * Clear all elements in the ArrayList.
+     * @returns void
+     */
+    clear() {
+        for (let i = 0; i < this.sizeNum; i++) {
+            this.remove(i);
+        }
+    }
+    /**
      * Get the size of the ArrayList
-     * @return the size of the ArrayList
+     * @returns the size of the ArrayList
      */
     size() {
         return this.sizeNum;
@@ -82,6 +91,7 @@ class ArrayList {
     /**
      * Check whether the index exceeds the capacity
      * @param index
+     * @returns void
      */
     rangeCheck(index) {
         if (index >= this.sizeNum || index < 0) {
@@ -90,6 +100,7 @@ class ArrayList {
     }
     /**
      *  Expand the capacity of the ArrayList to 1.5 times
+     * @returns void
      */
     ensureExplicitCapacity() {
         if (this.elementData.length < this.sizeNum + 1) {
