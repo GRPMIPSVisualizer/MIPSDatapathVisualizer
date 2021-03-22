@@ -78,7 +78,7 @@ export class Assembler {
      * The string for error message of invalid MIPS code.
      */
     private errMsg: string = "";
-    
+
     /**
      * Constructor for Assembler.
      */
@@ -173,22 +173,15 @@ export class Assembler {
     }
 
     /**
-     * Method for getting the raw input from the user.
-     * @returns an array of the raw input from the user.
-     */
-    public getSources(): Array<string> {
-        return this.sources;
-    }
-
-    /**
-     * Set the sources using the raw input from the user and deal with MIPS comments which start with a hash sign.
+     * Set the sources using the raw input from the user.
      * @param input the raw input from the user.
      * @returns void
      */
     public setSources(input: string): void {
         this.sources = input.split("\n");
         let i: number;
-        
+
+        //Deal with MIPS comments which start with a hash sign
         for (i = 0; i < this.sources.length; i++) {
             this.sources[i] = this.sources[i].trim();
             if (this.sources[i].search("#") != -1) {
@@ -462,7 +455,7 @@ export class Assembler {
                                 if (+address % 4 == 0) {
                                     this.mapForWord.set(address, +wordArray[j]);
                                 } else {
-                                    address = (+address + +address % 4).toFixed();
+                                    address = (+address + (4 - +address % 4)).toFixed();
                                     this.mapForWord.set(address, +wordArray[j]);
                                 }
                                 address = (+address + 4).toFixed();
@@ -484,7 +477,7 @@ export class Assembler {
                                 if (+address % 4 == 0) {
                                     this.mapForWord.set(address, wordNumber);
                                 } else {
-                                    address = (+address + +address % 4).toFixed();
+                                    address = (+address + (4 - +address % 4)).toFixed();
                                     this.mapForWord.set(address, wordNumber);
                                 }
                                 address = (+address + 4).toFixed();
@@ -519,7 +512,7 @@ export class Assembler {
                                 this.errMsg = this.errMsg + "Error 311: Data value out of range. -- " + this.data.get(i) + "\n";
                                 return false;
                             } else {
-                                this.mapForWord.set(address, byteNumber);
+                                this.mapForByte.set(address, byteNumber);
                                 address = (+address + 1).toFixed();
                             }
                         }
@@ -555,7 +548,7 @@ export class Assembler {
                                 if (+address % 4 == 0) {
                                     this.mapForWord.set(address, +wordArray[j]);
                                 } else {
-                                    address = (+address + +address % 4).toFixed();
+                                    address = (+address + (4 - +address % 4)).toFixed();
                                     this.mapForWord.set(address, +wordArray[j]);
                                 }
                                 address = (+address + 4).toFixed();
@@ -577,7 +570,7 @@ export class Assembler {
                                 if (+address % 4 == 0) {
                                     this.mapForWord.set(address, wordNumber);
                                 } else {
-                                    address = (+address + +address % 4).toFixed();
+                                    address = (+address + (4 - +address % 4)).toFixed();
                                     this.mapForWord.set(address, wordNumber);
                                 }
                                 address = (+address + 4).toFixed();
@@ -612,7 +605,7 @@ export class Assembler {
                                 this.errMsg = this.errMsg + "Error 320: Data value out of range. -- " + this.data.get(i) + "\n";
                                 return false;
                             } else {
-                                this.mapForWord.set(address, byteNumber);
+                                this.mapForByte.set(address, byteNumber);
                                 address = (+address + 1).toFixed();
                             }
                         }
