@@ -192,6 +192,14 @@ export class Assembler {
     }
 
     /**
+     * Get the raw input from the user.
+     * @returns the raw input from the user.
+     */
+    public getSources(): Array<string> {
+        return this.sources;
+    }
+
+    /**
      * Divide the sources(the raw input from the user) into two segments -- data segment and text segment. 
      * The contents of the data segment are stored into an ArrayList called data.
      * The contents of the text segment are stored into an ArrayList called sourceInsAL
@@ -525,7 +533,6 @@ export class Assembler {
                         if (dataIns == ".ascii") {
                             this.mapForAscii.set(address, insAfterLabel.substring(posOfSpace + 2, insAfterLabel.length - 1));
                             address = (+address + insAfterLabel.substring(posOfSpace + 2, insAfterLabel.length - 1).length).toFixed();
-                            console.log(insAfterLabel.substring(posOfSpace + 2, insAfterLabel.length - 1));
                         } else {
                             this.mapForAscii.set(address, insAfterLabel.substring(posOfSpace + 2, insAfterLabel.length - 1) + "\n");
                             address = (+address + insAfterLabel.substring(posOfSpace + 2, insAfterLabel.length - 1).length + 1).toFixed();
