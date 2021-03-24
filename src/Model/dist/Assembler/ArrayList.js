@@ -77,9 +77,7 @@ class ArrayList {
      * @returns void
      */
     clear() {
-        for (let i = 0; i < this.sizeNum; i++) {
-            this.remove(i);
-        }
+        this.elementData = [];
     }
     /**
      * Get the size of the ArrayList

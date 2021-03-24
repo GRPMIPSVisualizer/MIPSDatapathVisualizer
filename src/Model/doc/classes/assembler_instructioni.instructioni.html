@@ -68,6 +68,14 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Class for decoding the instruction of type-I into binary code.
+						It contains a constructor and a method to get the error message.</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -130,13 +138,24 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="assembler_instruction.instruction.html">Instruction</a>.<a href="assembler_instruction.instruction.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in Assembler/InstructionI.ts:14</li>
+									<li>Defined in Assembler/InstructionI.ts:42</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Constructor of InstructionI.
+									Translate the type-I instruction into binary format.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>ins: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the type-I instruction to be translated. It should be in the form like &quot;addi $8,$16,10&quot;.
+											There should be only one space between the operator and the first operand, no other space existing.
+										The register should be in dollar sign and a number.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="assembler_instructioni.instructioni.html" class="tsd-signature-type" data-tsd-kind="Class">InstructionI</a></h4>
@@ -153,9 +172,14 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="assembler_instruction.instruction.html">Instruction</a>.<a href="assembler_instruction.instruction.html#binins">binIns</a></p>
 						<ul>
-							<li>Defined in Assembler/Instruction.ts:3</li>
+							<li>Defined in Assembler/Instruction.ts:13</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The binary code of the instruction.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="errmsg" class="tsd-anchor"></a>
@@ -163,9 +187,14 @@
 					<div class="tsd-signature tsd-kind-icon">err<wbr>Msg<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Assembler/InstructionI.ts:14</li>
+							<li>Defined in Assembler/InstructionI.ts:42</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The string of the error message.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="imm" class="tsd-anchor"></a>
@@ -173,9 +202,14 @@
 					<div class="tsd-signature tsd-kind-icon">imm<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Assembler/InstructionI.ts:13</li>
+							<li>Defined in Assembler/InstructionI.ts:38</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The 16 bits code of the immediate number of the type-I instruction.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="ins" class="tsd-anchor"></a>
@@ -184,9 +218,14 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="assembler_instruction.instruction.html">Instruction</a>.<a href="assembler_instruction.instruction.html#ins">ins</a></p>
 						<ul>
-							<li>Defined in Assembler/Instruction.ts:2</li>
+							<li>Defined in Assembler/Instruction.ts:9</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The instruction to be decoded.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="op" class="tsd-anchor"></a>
@@ -194,9 +233,14 @@
 					<div class="tsd-signature tsd-kind-icon">op<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Assembler/InstructionI.ts:10</li>
+							<li>Defined in Assembler/InstructionI.ts:26</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The 6 bits opcodes of the type-I instruction.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="operandimm" class="tsd-anchor"></a>
@@ -204,9 +248,14 @@
 					<div class="tsd-signature tsd-kind-icon">operandIMM<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Assembler/InstructionI.ts:9</li>
+							<li>Defined in Assembler/InstructionI.ts:22</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The immediate number of the instruction.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="operandrs" class="tsd-anchor"></a>
@@ -214,9 +263,14 @@
 					<div class="tsd-signature tsd-kind-icon">operandRS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Assembler/InstructionI.ts:7</li>
+							<li>Defined in Assembler/InstructionI.ts:14</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The register of the rs operand of the instruction.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="operandrt" class="tsd-anchor"></a>
@@ -224,9 +278,14 @@
 					<div class="tsd-signature tsd-kind-icon">operandRT<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Assembler/InstructionI.ts:8</li>
+							<li>Defined in Assembler/InstructionI.ts:18</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The register of the rt operand of the instruction.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="operator" class="tsd-anchor"></a>
@@ -235,9 +294,14 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="assembler_instruction.instruction.html">Instruction</a>.<a href="assembler_instruction.instruction.html#operator">operator</a></p>
 						<ul>
-							<li>Defined in Assembler/Instruction.ts:4</li>
+							<li>Defined in Assembler/Instruction.ts:17</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The operator of the instruction.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="rs" class="tsd-anchor"></a>
@@ -245,9 +309,14 @@
 					<div class="tsd-signature tsd-kind-icon">rs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Assembler/InstructionI.ts:11</li>
+							<li>Defined in Assembler/InstructionI.ts:30</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The 5 bits rscodes of the type-I instruction.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="rt" class="tsd-anchor"></a>
@@ -255,9 +324,14 @@
 					<div class="tsd-signature tsd-kind-icon">rt<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Assembler/InstructionI.ts:12</li>
+							<li>Defined in Assembler/InstructionI.ts:34</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The 5 bits rtcodes of the type-I instruction.</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -273,10 +347,16 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="assembler_instruction.instruction.html">Instruction</a>.<a href="assembler_instruction.instruction.html#getbinins">getBinIns</a></p>
 								<ul>
-									<li>Defined in Assembler/Instruction.ts:13</li>
+									<li>Defined in Assembler/Instruction.ts:34</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Method for getting the instruction in binary format.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>a string of the instruction in binary format.</p>
 						</li>
 					</ul>
 				</section>
@@ -290,10 +370,16 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Assembler/InstructionI.ts:73</li>
+									<li>Defined in Assembler/InstructionI.ts:109</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Method for getting the error message of type-I instruction.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>a string of error message.</p>
 						</li>
 					</ul>
 				</section>

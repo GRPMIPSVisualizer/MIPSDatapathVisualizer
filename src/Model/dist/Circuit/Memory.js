@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Memory = void 0;
 const BItsGenerator_1 = require("../Library/BItsGenerator");
 const StringHandle_1 = require("../Library/StringHandle");
+const ExceptionReporter_1 = require("./ExceptionReporter");
 const Signal_1 = require("./Signal");
 /**
  * This class is an abstract model of real Memory component<br/>
@@ -149,8 +150,14 @@ class Memory {
      */
     readData() {
         let address = StringHandle_1.bin2dec(this.addressPin, true);
+        if (this.outOfRangeException(address)) {
+            return;
+        }
         let data1 = this.MemoryArray[Math.floor(address / 4)];
         let data2 = this.MemoryArray[Math.floor(address / 4) + 1];
+        if (data1 == undefined) {
+            data1 = BItsGenerator_1.init_bits(32);
+        }
         if (data2 == undefined) {
             data2 = BItsGenerator_1.init_bits(32);
         }
@@ -161,6 +168,9 @@ class Memory {
      */
     writeData() {
         let address = StringHandle_1.bin2dec(this.addressPin, true);
+        if (this.outOfRangeException(address)) {
+            return;
+        }
         let data1 = this.MemoryArray[Math.floor(address / 4)];
         let data2 = this.MemoryArray[Math.floor(address / 4) + 1];
         let has2 = (address % 4 == 0) ? false : true;
@@ -188,6 +198,19 @@ class Memory {
     clockSiganlChange() {
         this.clockSignal.changeSiganl();
         this.dataReact();
+    }
+    /**
+     * report out of range exceptions
+     * @param addr the accessing address
+     * @returns boolean value indicates whether the accessed address is out of range.
+     */
+    outOfRangeException(addr) {
+        if (addr < 268435456 || addr > 2147483644) {
+            let reporter = ExceptionReporter_1.ExceptionReporter.getReporter();
+            reporter.addException("Memory: access memory out of range!");
+            return true;
+        }
+        return false;
     }
     /**
      * set the clock signal of this memory
@@ -322,7 +345,7 @@ class Memory {
         if (data1 == undefined) {
             data1 = BItsGenerator_1.init_bits(32);
         }
-        data1 = data1.slice(0, 8 * (3 - position)) + datum + data1.slice(8 * (3 - position) + 8, 32);
+        data1 = data1.slice(0, 8 * (3 - position)) + datum[1] + data1.slice(8 * (3 - position) + 8, 32);
         this.MemoryArray[staticDataIndex] = data1;
         this.staticData.set(StringHandle_1.decToUnsignedBin32(staticDataIndex * 4), data1);
     }

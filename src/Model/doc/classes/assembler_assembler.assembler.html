@@ -68,6 +68,16 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Class Assembler is for an assembler to validate the MIPS code and change the MIPS code into binary code.</p>
+					</div>
+					<p>This class contains methods that format the source code, deal with labels and pseudo instructions,
+						segment data part and text part of the code and change the code into binary code.
+					It also provides some get methods to get the source code, basic code and maps which store the address and the data stored in the address.</p>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -123,7 +133,9 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="assembler_assembler.assembler.html#getmapforword" class="tsd-kind-icon">get<wbr>Map<wbr>For<wbr>Word</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="assembler_assembler.assembler.html#getsourceins" class="tsd-kind-icon">get<wbr>Source<wbr>Ins</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="assembler_assembler.assembler.html#getsourceinsal" class="tsd-kind-icon">get<wbr>Source<wbr>InsAL</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="assembler_assembler.assembler.html#getsources" class="tsd-kind-icon">get<wbr>Sources</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="assembler_assembler.assembler.html#preprocess" class="tsd-kind-icon">preprocess</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="assembler_assembler.assembler.html#refresh" class="tsd-kind-icon">refresh</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="assembler_assembler.assembler.html#segmentdatatext" class="tsd-kind-icon">segment<wbr>Data<wbr>Text</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="assembler_assembler.assembler.html#separatelabelins" class="tsd-kind-icon">separate<wbr>Label<wbr>Ins</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="assembler_assembler.assembler.html#setsources" class="tsd-kind-icon">set<wbr>Sources</a></li>
@@ -147,9 +159,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Assembler/Assembler.ts:27</li>
+									<li>Defined in Assembler/Assembler.ts:80</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Constructor for Assembler.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="assembler_assembler.assembler.html" class="tsd-signature-type" data-tsd-kind="Class">Assembler</a></h4>
 						</li>
 					</ul>
@@ -163,9 +180,14 @@
 					<div class="tsd-signature tsd-kind-icon">basic<span class="tsd-signature-symbol">:</span> <a href="assembler_arraylist.arraylist.html" class="tsd-signature-type" data-tsd-kind="Class">ArrayList</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Assembler/Assembler.ts:21</li>
+							<li>Defined in Assembler/Assembler.ts:56</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The contents of the code which has translated the label to address and expanded pseudo instructions.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="bin" class="tsd-anchor"></a>
@@ -173,9 +195,14 @@
 					<div class="tsd-signature tsd-kind-icon">bin<span class="tsd-signature-symbol">:</span> <a href="assembler_arraylist.arraylist.html" class="tsd-signature-type" data-tsd-kind="Class">ArrayList</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Assembler/Assembler.ts:22</li>
+							<li>Defined in Assembler/Assembler.ts:60</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The binary code of the MIPS instructions.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="data" class="tsd-anchor"></a>
@@ -183,9 +210,14 @@
 					<div class="tsd-signature tsd-kind-icon">data<span class="tsd-signature-symbol">:</span> <a href="assembler_arraylist.arraylist.html" class="tsd-signature-type" data-tsd-kind="Class">ArrayList</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Assembler/Assembler.ts:18</li>
+							<li>Defined in Assembler/Assembler.ts:44</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The contents contained in the .data segment.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="decoderfori" class="tsd-anchor"></a>
@@ -193,9 +225,14 @@
 					<div class="tsd-signature tsd-kind-icon">decoder<wbr>ForI<span class="tsd-signature-symbol">:</span> <a href="assembler_decoderfori.decoderfori.html" class="tsd-signature-type" data-tsd-kind="Class">DecoderForI</a><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Assembler/Assembler.ts:15</li>
+							<li>Defined in Assembler/Assembler.ts:32</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The decoder to validate and decode instructions of type-I.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="decoderforj" class="tsd-anchor"></a>
@@ -203,9 +240,14 @@
 					<div class="tsd-signature tsd-kind-icon">decoder<wbr>ForJ<span class="tsd-signature-symbol">:</span> <a href="assembler_decoderforj.decoderforj.html" class="tsd-signature-type" data-tsd-kind="Class">DecoderForJ</a><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Assembler/Assembler.ts:16</li>
+							<li>Defined in Assembler/Assembler.ts:36</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The decoder to validate and decode instructions of type-J.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="decoderforr" class="tsd-anchor"></a>
@@ -213,9 +255,14 @@
 					<div class="tsd-signature tsd-kind-icon">decoder<wbr>ForR<span class="tsd-signature-symbol">:</span> <a href="assembler_decoderforr.decoderforr.html" class="tsd-signature-type" data-tsd-kind="Class">DecoderForR</a><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Assembler/Assembler.ts:14</li>
+							<li>Defined in Assembler/Assembler.ts:28</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The decoder to validate and decode instructions of type-R.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="errmsg" class="tsd-anchor"></a>
@@ -223,9 +270,14 @@
 					<div class="tsd-signature tsd-kind-icon">err<wbr>Msg<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Assembler/Assembler.ts:27</li>
+							<li>Defined in Assembler/Assembler.ts:80</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The string for error message of invalid MIPS code.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="mapforascii" class="tsd-anchor"></a>
@@ -233,9 +285,14 @@
 					<div class="tsd-signature tsd-kind-icon">map<wbr>For<wbr>Ascii<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Assembler/Assembler.ts:25</li>
+							<li>Defined in Assembler/Assembler.ts:72</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The map stored .ascii and .asciiz data in the .data segment, which the keys are addresses and the values are strings stored in addresses.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="mapforbyte" class="tsd-anchor"></a>
@@ -243,9 +300,14 @@
 					<div class="tsd-signature tsd-kind-icon">map<wbr>For<wbr>Byte<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Assembler/Assembler.ts:26</li>
+							<li>Defined in Assembler/Assembler.ts:76</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The map stored .byte data in the .data segment, which the keys are addresses and the values are integers stored in addresses.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="mapfordatalabel" class="tsd-anchor"></a>
@@ -253,9 +315,14 @@
 					<div class="tsd-signature tsd-kind-icon">map<wbr>For<wbr>Data<wbr>Label<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Assembler/Assembler.ts:23</li>
+							<li>Defined in Assembler/Assembler.ts:64</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The map stored labels in the .data segment, which the keys are labels and the values are addresses matched with labels.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="mapforword" class="tsd-anchor"></a>
@@ -263,9 +330,14 @@
 					<div class="tsd-signature tsd-kind-icon">map<wbr>For<wbr>Word<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Assembler/Assembler.ts:24</li>
+							<li>Defined in Assembler/Assembler.ts:68</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The map stored .word data in the .data segment, which the keys are addresses and the values are integers stored in addresses.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="sourceins" class="tsd-anchor"></a>
@@ -273,9 +345,14 @@
 					<div class="tsd-signature tsd-kind-icon">source<wbr>Ins<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Assembler/Assembler.ts:20</li>
+							<li>Defined in Assembler/Assembler.ts:52</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The contents stored in the .text segment in the form of an array.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="sourceinsal" class="tsd-anchor"></a>
@@ -283,9 +360,14 @@
 					<div class="tsd-signature tsd-kind-icon">source<wbr>InsAL<span class="tsd-signature-symbol">:</span> <a href="assembler_arraylist.arraylist.html" class="tsd-signature-type" data-tsd-kind="Class">ArrayList</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Assembler/Assembler.ts:19</li>
+							<li>Defined in Assembler/Assembler.ts:48</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The contents contained in the .text segment in the form of an ArrayList.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="sources" class="tsd-anchor"></a>
@@ -293,9 +375,14 @@
 					<div class="tsd-signature tsd-kind-icon">sources<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Assembler/Assembler.ts:17</li>
+							<li>Defined in Assembler/Assembler.ts:40</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The raw input from the user.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
 					<a name="assembler" class="tsd-anchor"></a>
@@ -303,9 +390,14 @@
 					<div class="tsd-signature tsd-kind-icon">assembler<span class="tsd-signature-symbol">:</span> <a href="assembler_assembler.assembler.html" class="tsd-signature-type" data-tsd-kind="Class">Assembler</a><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in Assembler/Assembler.ts:13</li>
+							<li>Defined in Assembler/Assembler.ts:24</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Assembler for validating the MIPS code and translating the MIPS code into binary code.</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -320,10 +412,17 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Assembler/Assembler.ts:771</li>
+									<li>Defined in Assembler/Assembler.ts:1183</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Assemble the instructions stored in the ArrayList called basic and translate instructions into a string of binary code.
+									The binary code is stored in the ArrayList called bin.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>true if all the instructions are valid and translated into binary code successfully, otherwise false.</p>
 						</li>
 					</ul>
 				</section>
@@ -337,10 +436,16 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Assembler/Assembler.ts:514</li>
+									<li>Defined in Assembler/Assembler.ts:879</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Check whether there are labels with the same name or not.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>true if there is no labels with the same name, otherwise false.</p>
 						</li>
 					</ul>
 				</section>
@@ -354,7 +459,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Assembler/Assembler.ts:540</li>
+									<li>Defined in Assembler/Assembler.ts:905</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -363,7 +468,7 @@
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-							<p>true if there is no error in the pseudo instructions, otherwise false</p>
+							<p>true if there is no error in the pseudo instructions, otherwise false.</p>
 						</li>
 					</ul>
 				</section>
@@ -377,10 +482,19 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Assembler/Assembler.ts:209</li>
+									<li>Defined in Assembler/Assembler.ts:334</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Format the data segment.
+										The function puts the label and the data layout instruction in the same line with a space interval if they do not follow this format
+										and puts the data layout instruction and the data in the same line with a space interval if they do not follow this format.
+									The formatted code is stored back to the ArrayList called data.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>true if the data segment is formatted successfully and false if there are invalid labels or instructions.</p>
 						</li>
 					</ul>
 				</section>
@@ -394,10 +508,16 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Assembler/Assembler.ts:63</li>
+									<li>Defined in Assembler/Assembler.ts:155</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Method for getting code which has translated the label to address and expanded pseudo instructions in the form of an ArrayList.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="assembler_arraylist.arraylist.html" class="tsd-signature-type" data-tsd-kind="Class">ArrayList</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>an ArrayList of code which has translated the label to address and expanded pseudo instructions.</p>
 						</li>
 					</ul>
 				</section>
@@ -411,10 +531,16 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Assembler/Assembler.ts:71</li>
+									<li>Defined in Assembler/Assembler.ts:171</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Method for getting the binary code of the MIPS instructions in the form of an ArrayList.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="assembler_arraylist.arraylist.html" class="tsd-signature-type" data-tsd-kind="Class">ArrayList</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>an ArrayList of the binary code.</p>
 						</li>
 					</ul>
 				</section>
@@ -428,10 +554,16 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Assembler/Assembler.ts:67</li>
+									<li>Defined in Assembler/Assembler.ts:163</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Method for getting the code of .data segment in the form of an ArrayList.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="assembler_arraylist.arraylist.html" class="tsd-signature-type" data-tsd-kind="Class">ArrayList</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>an ArrayList of the code of .data segment.</p>
 						</li>
 					</ul>
 				</section>
@@ -445,10 +577,16 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Assembler/Assembler.ts:35</li>
+									<li>Defined in Assembler/Assembler.ts:99</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Method for getting the error message of invalid MIPS code.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>a string of error message.</p>
 						</li>
 					</ul>
 				</section>
@@ -462,10 +600,16 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Assembler/Assembler.ts:47</li>
+									<li>Defined in Assembler/Assembler.ts:123</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Method for getting the map which stores .ascii and .asciiz data in the .data segment.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>a map which the keys are addresses and the values are strings stored in addresses.</p>
 						</li>
 					</ul>
 				</section>
@@ -479,10 +623,16 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Assembler/Assembler.ts:51</li>
+									<li>Defined in Assembler/Assembler.ts:131</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Method for getting the map which stores .byte data in the .data segment.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>a map which the keys are addresses and the values are integers stored in addresses.</p>
 						</li>
 					</ul>
 				</section>
@@ -496,10 +646,16 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Assembler/Assembler.ts:43</li>
+									<li>Defined in Assembler/Assembler.ts:115</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Method for getting the map which stores labels in the .data segment.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>a map which the keys are labels and the values are addresses matched with labels.</p>
 						</li>
 					</ul>
 				</section>
@@ -513,10 +669,16 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Assembler/Assembler.ts:39</li>
+									<li>Defined in Assembler/Assembler.ts:107</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Method for getting the map which stores .word data in the .data segment.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>a map which the keys are addresses and the values are integers stored in addresses.</p>
 						</li>
 					</ul>
 				</section>
@@ -530,10 +692,16 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Assembler/Assembler.ts:59</li>
+									<li>Defined in Assembler/Assembler.ts:147</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Method for getting .text segment in the form of an array.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
+							<p>an array of .text segment.</p>
 						</li>
 					</ul>
 				</section>
@@ -547,10 +715,39 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Assembler/Assembler.ts:55</li>
+									<li>Defined in Assembler/Assembler.ts:139</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Method for getting the .text segment in the form of an ArrayList.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="assembler_arraylist.arraylist.html" class="tsd-signature-type" data-tsd-kind="Class">ArrayList</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>an ArrayList of .text segment.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getsources" class="tsd-anchor"></a>
+					<h3>get<wbr>Sources</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Sources<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in Assembler/Assembler.ts:198</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get the raw input from the user.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
+							<p>the raw input from the user.</p>
 						</li>
 					</ul>
 				</section>
@@ -564,10 +761,41 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Assembler/Assembler.ts:742</li>
+									<li>Defined in Assembler/Assembler.ts:1131</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Preprocess the instructions before assembling.
+										Methods called &quot;segmentDataText&quot;, &quot;checkLabel&quot;, &quot;formatData&quot;, &quot;separateLabelIns&quot;, &quot;storeData&quot;, &quot;expandPseudo&quot; and &quot;translateLabel&quot;
+									are executed one by one.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>true if all methods in preprocess return true, otherwise false.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="refresh" class="tsd-anchor"></a>
+					<h3>refresh</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">refresh<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in Assembler/Assembler.ts:1164</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Clear all fields in Assembler.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<p>void</p>
 						</li>
 					</ul>
 				</section>
@@ -581,7 +809,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Assembler/Assembler.ts:102</li>
+									<li>Defined in Assembler/Assembler.ts:209</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -593,6 +821,7 @@
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<p>void</p>
 						</li>
 					</ul>
 				</section>
@@ -606,10 +835,19 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Assembler/Assembler.ts:185</li>
+									<li>Defined in Assembler/Assembler.ts:305</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Divide the label and instruction into two lines if they are in the same line in source instructions.
+										The function operates the Array called sourceIns directly.
+										If a label is valid and followed by an instruction which in the same line,
+									the element is separated into two elements in the array which one is the label and the other is the next instruction.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>true if there is no invalid labels and separate successfully, false if there are invalid labels.</p>
 						</li>
 					</ul>
 				</section>
@@ -623,7 +861,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Assembler/Assembler.ts:79</li>
+									<li>Defined in Assembler/Assembler.ts:180</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -636,11 +874,12 @@
 								<li>
 									<h5>input: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>the raw input from the user</p>
+										<p>the raw input from the user.</p>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<p>void</p>
 						</li>
 					</ul>
 				</section>
@@ -654,10 +893,20 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Assembler/Assembler.ts:308</li>
+									<li>Defined in Assembler/Assembler.ts:666</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Store the data in the data segment into maps.
+										The labels in the data segment are stored as keys and the addresses matched with the labels are stored as values in the map called mapForDataLabel.
+										The addresses of the data stored by .word instructions are stored as keys and the data stored in this address is stored as values in the map called mapForWord.
+										The addresses of the data stored by .byte instructions are stored as keys and the data stored in this address is stored as values in the map called mapForByte.
+									The addresses of string are stored as keys and the string stored in this address is stored as values in the map called mapForAscii.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>true if all data is stored successfully and false if there is invalid data type or the data is out of range.</p>
 						</li>
 					</ul>
 				</section>
@@ -671,10 +920,17 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Assembler/Assembler.ts:657</li>
+									<li>Defined in Assembler/Assembler.ts:1037</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Translate the labels in the &quot;j&quot;, &quot;jal&quot;, &quot;beq&quot; and &quot;bne&quot; instructions into addresses or offset.
+									The translated instructions are stored in an ArrayList called basic.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>true if all labels in the four types of instructions are translated successfully, false if there are invalid labels.</p>
 						</li>
 					</ul>
 				</section>
@@ -688,10 +944,16 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Assembler/Assembler.ts:31</li>
+									<li>Defined in Assembler/Assembler.ts:91</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Method for getting the assembler to assemble the MIPS code.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="assembler_assembler.assembler.html" class="tsd-signature-type" data-tsd-kind="Class">Assembler</a></h4>
+							<p>an assembler for validating the MIPS code and translating the MIPS code into binary code.</p>
 						</li>
 					</ul>
 				</section>
@@ -806,7 +1068,13 @@
 								<a href="assembler_assembler.assembler.html#getsourceinsal" class="tsd-kind-icon">get<wbr>Source<wbr>InsAL</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="assembler_assembler.assembler.html#getsources" class="tsd-kind-icon">get<wbr>Sources</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="assembler_assembler.assembler.html#preprocess" class="tsd-kind-icon">preprocess</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="assembler_assembler.assembler.html#refresh" class="tsd-kind-icon">refresh</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="assembler_assembler.assembler.html#segmentdatatext" class="tsd-kind-icon">segment<wbr>Data<wbr>Text</a>

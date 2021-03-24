@@ -1,5 +1,6 @@
 import { init_bits } from "../Library/BItsGenerator";
 import { bin2dec, binaryDetect, decToUnsignedBin32, lengthDetect, stringToIntArray } from "../Library/StringHandle";
+import { ExceptionReporter } from "./ExceptionReporter";
 import { Signal, signalType } from "./Signal";
 /**
  * This class is an abstract model of real Memory component<br/>
@@ -188,8 +189,14 @@ export class Memory{
      */
     private readData():void{
         let address:number = bin2dec(this.addressPin,true);
+        if(this.outOfRangeException(address)){
+            return;
+        }
         let data1:string = this.MemoryArray[Math.floor(address / 4)];
         let data2:string = this.MemoryArray[Math.floor(address / 4)+1];
+        if (data1 == undefined){
+            data1 = init_bits(32);
+        }
         if (data2 == undefined){
             data2 = init_bits(32);
         }
@@ -201,6 +208,9 @@ export class Memory{
      */
     private writeData():void{
         let address:number = bin2dec(this.addressPin,true);
+        if(this.outOfRangeException(address)){
+            return;
+        }
         let data1:string = this.MemoryArray[Math.floor(address / 4)];
         let data2:string = this.MemoryArray[Math.floor(address / 4)+1];
         let has2:boolean = (address % 4 == 0)?false:true;
@@ -231,6 +241,19 @@ export class Memory{
     public clockSiganlChange():void{
         this.clockSignal.changeSiganl();
         this.dataReact();
+    }
+    /**
+     * report out of range exceptions
+     * @param addr the accessing address
+     * @returns boolean value indicates whether the accessed address is out of range.
+     */
+    private outOfRangeException(addr:number):boolean{
+        if (addr<268435456 || addr > 2147483644){
+            let reporter:ExceptionReporter = ExceptionReporter.getReporter();
+            reporter.addException("Memory: access memory out of range!");
+            return true;
+        }
+        return false;
     }
 
     /**

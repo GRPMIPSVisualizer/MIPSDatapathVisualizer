@@ -566,6 +566,7 @@ class singleCycleCpu {
         this.DMOut = BItsGenerator_1.init_bits(32);
         this.ALUAdderB = BItsGenerator_1.init_bits(32);
         this.signExtendOUT = BItsGenerator_1.init_bits(32);
+        this.assembler = Assembler_1.Assembler.getAssembler();
         this.MUXB.addNotifyFunc(this._PC.muxChange.bind(this._PC, this.MUXB));
         this.MUXA.addNotifyFunc(this.MUXB.setMuxInpin32A.bind(this.MUXB, this.MUXA));
         this.ALUMUX.addNotifyFunc(this._alu.setMuxInpinB.bind(this._alu, this.ALUMUX));
