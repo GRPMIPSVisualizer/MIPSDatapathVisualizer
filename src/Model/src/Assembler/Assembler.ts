@@ -970,7 +970,17 @@ export class Assembler {
                             ins0 = "slt $1," + operand0 + "," + operand1;
                             ins1 = "beq $1,$0," + operand2;
                         } else if (operator == "li") {
-                            ins0 = "addiu " + operand0 + ",$0," + operand1;
+                            if (+operand1 > -32768 && +operand1 < 32767) {
+                                ins0 = "addiu " + operand0 + ",$0," + operand1;
+                            } else if (+operand1 > -2147483548 && +operand1 < 2147483547) {
+                                let first16bits = binaryToDecimal(operand1.substring(0, 16));
+                                let last16bits = binaryToDecimal(operand1.substring(16));
+                                ins0 = "lui $1," + first16bits;
+                                ins1 = "ori " + operand0 + ",$1," + last16bits;
+                            } else {
+                                this.errMsg = this.errMsg + "Error 338: Operand is out of range. -- " + this.sourceIns[i] + "\n";
+                                return false;
+                            }                           
                         } else if (operator == "la") {
                             if (this.mapForDataLabel.has(operand1.trim())) {
                                 let address: string = decimalToBinary(+(this.mapForDataLabel.get(operand1) + ""), 32);
