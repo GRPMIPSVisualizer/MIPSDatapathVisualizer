@@ -9,7 +9,6 @@ test("Test of setSource: ", () => {
 assembler.segmentDataText();
 let data = assembler.getData().size();
 let sourceInsAL = assembler.getSourceInsAL();
-console.log(sourceInsAL);
 test("Test of segmentDataText: ", () => {
   expect(data).toBe(4);
   expect(sourceInsAL.size()).toBe(3);
@@ -56,5 +55,4 @@ test("Test of assembler: ", () => {
   expect(bin3).toBe("00111100000000010001000000000001");
   expect(bin4).toBe("00110100001001000000000000000100");
 });
-//assembler.refresh();
 

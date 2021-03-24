@@ -107,7 +107,8 @@ export class ArrayList<E> implements List<E> {
      * @returns void
      */
     clear(): void {
-        this.elementData = [];
+        this.elementData.splice(0, this.sizeNum);
+        this.sizeNum = 0;
     }
 
     /**
