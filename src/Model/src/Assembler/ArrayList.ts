@@ -107,9 +107,7 @@ export class ArrayList<E> implements List<E> {
      * @returns void
      */
     clear(): void {
-        for (let i = 0; i < this.sizeNum; i++) {
-            this.remove(i);
-        }
+        this.elementData = [];
     }
 
     /**

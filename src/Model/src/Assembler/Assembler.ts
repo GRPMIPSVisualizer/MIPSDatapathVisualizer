@@ -278,8 +278,14 @@ export class Assembler {
             }
         }
 
+        for (i = 0; i < this.data.size(); i++) {
+            if (this.data.get(i).toString().trim() == "") {
+                this.data.remove(i);
+            }
+        }
+
         for (i = 0; i < this.sourceInsAL.size(); i++) {
-            if (this.sourceInsAL.get(i) == "") {
+            if (this.sourceInsAL.get(i).toString().trim() == "") {
                 this.sourceInsAL.remove(i);
             }
         }
@@ -330,79 +336,305 @@ export class Assembler {
         let i: number;
         let posOfColon: number;
         let label: string;
-        let patt = /^[\s]$/;
         let pattLabel = /^[A-Za-z0-9._]+$/;
-        let pattnumber = /[0-9]/;
+        let pattnumber = /^[0-9,+-]+$/;
         let resultData: ArrayList<string> = new ArrayList<string>();
         let posOfSpace: number;
+        let posOfQuo: number;
+        let dataStr: string = "";
+        let j: number;
+        let insStr: string;
+        let insAfterLabel: string;
         for (i = 0; i < this.data.size(); i++) {
             posOfColon = this.data.get(i).toString().indexOf(":");
+            if (this.data.get(i).toString().trim() == "") {
+                continue;
+            }
             if (posOfColon != -1) {
                 label = this.data.get(i).toString().substring(0, posOfColon);
                 if (pattLabel.test(label) && pattnumber.test(label.charAt(0))) {
                     this.errMsg = this.errMsg + "Error 302: Invalid label. -- " + this.data.get(i) + "\n";
                     return false;
                 }
-                if (this.data.get(i).toString().substring(posOfColon + 1, this.data.get(i).toString.length) == "" || !patt.test(this.data.get(i).toString().substring(posOfColon + 1, this.data.get(i).toString.length))) {
+                if (this.data.get(i).toString().substring(posOfColon + 1).trim() == "") {
                     if (i == this.data.size() - 1) {
                         resultData.add(label + ":");
-                        return true;
+                        break;
                     } else if (this.data.get(i + 1).toString().indexOf(":") != -1) {
                         resultData.add(label + ":");
                         continue;
                     } else {
-                        if (this.data.get(i + 1).toString().trim() == ".word" || this.data.get(i + 1).toString().trim() == ".byte" || this.data.get(i + 1).toString().trim() == ".ascii" || this.data.get(i + 1).toString().trim() == ".asciiz") {
-                            if (i != this.data.size() - 2) {
-                                if (this.data.get(i + 2).toString().trim().charAt(0) != ".") {
-                                    resultData.add(label + ": " + this.data.get(i + 1).toString() + " " + this.data.get(i + 2).toString());
-                                    i = i + 2;
+                        posOfSpace = this.data.get(i + 1).toString().trim().indexOf(" ");
+                        posOfQuo = this.data.get(i + 1).toString().trim().indexOf("\"");
+                        if (posOfQuo == -1) {
+                            if (this.data.get(i + 1).toString().trim().substring(0, posOfSpace) == ".word" || this.data.get(i + 1).toString().trim().substring(0, posOfSpace) == ".byte" || this.data.get(i + 1).toString().trim() == ".word" || this.data.get(i + 1).toString().trim() == ".byte") {
+                                if (i != this.data.size() - 2) {
+                                    j = i + 2;
+                                    if (this.data.get(i + 1).toString().trim() == ".word" || this.data.get(i + 1).toString().trim() == ".byte") {
+                                        dataStr = this.data.get(i + 1).toString().trim() + " ";
+                                    } else {
+                                        dataStr = this.data.get(i + 1).toString().trim() + ",";
+                                    }
+                                    while (j != this.data.size()) {
+                                        if (pattnumber.test(this.data.get(j).toString().trim())) {
+                                            dataStr = dataStr + this.data.get(j).toString().trim() + ",";
+                                            j++;
+                                        } else {
+                                            break;
+                                        }
+                                    }
+                                    if (dataStr.endsWith(",")) {
+                                        dataStr = dataStr.substring(0, dataStr.length - 1);
+                                    }
+                                    resultData.add(label + ": " + dataStr);
+                                    i = j - 1;
+                                    dataStr = "";
                                     continue;
+                                } else {
+                                    resultData.add(label + ": " + this.data.get(i + 1).toString().trim());
+                                    break;
                                 }
+                            } else if (this.data.get(i + 1).toString().trim() == ".ascii" || this.data.get(i + 1).toString().trim() == ".asciiz") {
+                                if (i != this.data.size() - 2) {
+                                    j = i + 2;
+                                    while (j != this.data.size()) {
+                                        if (this.data.get(j).toString().trim().charAt(0) == "\"" && this.data.get(j).toString().trim().endsWith("\"")) {
+                                            dataStr = dataStr + this.data.get(j).toString().trim().substring(1, this.data.get(j).toString().trim().length - 1);
+                                            j++;
+                                        } else {
+                                            break;
+                                        }
+                                    }
+                                    if (dataStr == "") {
+                                        resultData.add(label + ": " + this.data.get(i + 1).toString().trim());
+                                    } else {
+                                        resultData.add(label + ": " + this.data.get(i + 1).toString().trim() + " \"" + dataStr + "\"");
+                                    }
+                                    i = j - 1;
+                                    dataStr = "";
+                                    continue;
+                                } else {
+                                    resultData.add(label + ": " + this.data.get(i + 1).toString().trim());
+                                    break;
+                                }
+                            } else {
+                                resultData.add(label + ": " + this.data.get(i).toString().substring(posOfColon + 1).trim());
+                                i++;
+                                continue;
                             }
                         } else {
-                            resultData.add(label + ": " + this.data.get(i + 1).toString());
-                            i++;
-                            continue;
+                            if (posOfSpace == -1) {
+                                insStr = this.data.get(i + 1).toString().trim().substring(0, posOfQuo);
+                            } else if (posOfSpace < posOfQuo) {
+                                insStr = this.data.get(i + 1).toString().trim().substring(0, posOfSpace);
+                            } else {
+                                insStr = this.data.get(i + 1).toString().trim().substring(0, posOfQuo);
+                            }
+                            if (insStr == ".ascii" || insStr == ".asciiz" || this.data.get(i + 1).toString().trim() == ".ascii" || this.data.get(i + 1).toString().trim() == ".asciiz") {
+                                if (i != this.data.size() - 2) {
+                                    j = i + 2;
+                                    dataStr = insStr + " " + this.data.get(i + 1).toString().trim().substring(posOfQuo, this.data.get(i + 1).toString().trim().length - 1);
+                                    while (j != this.data.size()) {
+                                        if (this.data.get(j).toString().trim().charAt(0) == "\"" && this.data.get(j).toString().trim().endsWith("\"")) {
+                                            dataStr = dataStr + this.data.get(j).toString().trim().substring(1, this.data.get(j).toString().trim().length - 1);
+                                            j++;
+                                        } else {
+                                            break;
+                                        }
+                                    }
+                                    resultData.add(label + ": " + dataStr + "\"");
+                                    i = j - 1;
+                                    dataStr = "";
+                                    continue;
+                                } else {
+                                    resultData.add(label + ": " + this.data.get(i + 1).toString().trim());
+                                    break;
+                                }
+                            } else {
+                                resultData.add(label + ": " + this.data.get(i).toString().substring(posOfColon + 1).trim());
+                                i++;
+                                continue;
+                            }
                         }
                     }
                 } else {
-                    resultData.add(label + ": " + this.data.get(i).toString().substring(posOfColon + 1, this.data.get(i).toString.length));
+                    if (i == this.data.size() - 1) {
+                        insAfterLabel = this.data.get(i).toString().substring(posOfColon + 1).trim();
+                        posOfQuo = insAfterLabel.indexOf("\"");
+                        if (posOfQuo != -1) {
+                            resultData.add(label + ": " + insAfterLabel.substring(0, posOfQuo).trim() + " " + insAfterLabel.substring(posOfQuo));
+                            break;
+                        } else {
+                            resultData.add(label + ": " + this.data.get(i).toString().substring(posOfColon + 1).trim());
+                            break;
+                        }
+                    } else if (this.data.get(i + 1).toString().indexOf(":") != -1) {
+                        resultData.add(label + ": " + this.data.get(i).toString().substring(posOfColon + 1).trim());
+                        continue;
+                    } else {
+                        insAfterLabel = this.data.get(i).toString().substring(posOfColon + 1).trim();
+                        posOfSpace = insAfterLabel.indexOf(" ");
+                        posOfQuo = insAfterLabel.indexOf("\"");
+                        if (posOfQuo == -1) {
+                            if (insAfterLabel.substring(0, posOfSpace) == ".word" || insAfterLabel.substring(0, posOfSpace) == ".byte" || insAfterLabel == ".word" || insAfterLabel == ".byte") {
+                                j = i + 1;
+                                if (insAfterLabel == ".word" || insAfterLabel == ".byte") {
+                                    dataStr = insAfterLabel + " ";
+                                } else {
+                                    dataStr = insAfterLabel + ",";
+                                }
+                                while (j != this.data.size()) {
+                                    if (pattnumber.test(this.data.get(j).toString().trim())) {
+                                        dataStr = dataStr + this.data.get(j).toString().trim() + ",";
+                                        j++;
+                                    } else {
+                                        break;
+                                    }
+                                }
+                                if (dataStr.endsWith(",")) {
+                                    dataStr = dataStr.substring(0, dataStr.length - 1);
+                                }
+                                resultData.add(label + ": " + dataStr);
+                                i = j - 1;
+                                dataStr = "";
+                                continue;
+                            } else if (insAfterLabel == ".ascii" || insAfterLabel == ".asciiz") {
+                                j = i + 1;
+                                dataStr = insAfterLabel + " \"";
+                                while (j != this.data.size()) {
+                                    if (this.data.get(j).toString().trim().charAt(0) == "\"" && this.data.get(j).toString().trim().endsWith("\"")) {
+                                        dataStr = dataStr + this.data.get(j).toString().trim().substring(1, this.data.get(j).toString().trim().length - 1);
+                                        j++;
+                                    } else {
+                                        break;
+                                    }
+                                }
+                                resultData.add(label + ": " + dataStr + "\"");
+                                i = j - 1;
+                                dataStr = "";
+                                continue;
+                            } else {
+                                resultData.add(label + ": " + insAfterLabel);
+                                i++;
+                                continue;
+                            }
+                        } else {
+                            if (posOfSpace == -1) {
+                                insStr = insAfterLabel.substring(0, posOfQuo);
+                            } else if (posOfSpace < posOfQuo) {
+                                insStr = insAfterLabel.substring(0, posOfSpace);
+                            } else {
+                                insStr = insAfterLabel.substring(0, posOfQuo);
+                            }
+                            if (insStr == ".ascii" || insStr == ".asciiz" || insAfterLabel == ".ascii" || insAfterLabel == ".asciiz") {
+                                j = i + 1;
+                                dataStr = insStr + " " + insAfterLabel.substring(posOfQuo, insAfterLabel.length - 1);
+                                while (j != this.data.size()) {
+                                    if (this.data.get(j).toString().trim().charAt(0) == "\"" && this.data.get(j).toString().trim().endsWith("\"")) {
+                                        dataStr = dataStr + this.data.get(j).toString().trim().substring(1, this.data.get(j).toString().trim().length - 1);
+                                        j++;
+                                    } else {
+                                        break;
+                                    }
+                                }
+                                resultData.add(label + ": " + dataStr + "\"");
+                                i = j - 1;
+                                dataStr = "";
+                                continue;
+                            } else {
+                                resultData.add(label + ": " + insAfterLabel);
+                                i++;
+                                continue;
+                            }
+                        }
+                    }
                 }
             } else {
                 if (this.data.get(i).toString().trim() == ".ascii" || this.data.get(i).toString().trim() == ".asciiz") {
                     if (i == this.data.size() - 1) {
-                        return true;
-                    } else if (this.data.get(i + 1).toString().trim().charAt(0) == "\"" && this.data.get(i + 1).toString().trim().endsWith("\"")) {
-                        resultData.add(this.data.get(i).toString().trim() + " " + this.data.get(i + 1).toString().trim());
-                        i++;
-                        continue;
+                        break;
                     } else {
+                        j = i + 1;
+                        while (j != this.data.size()) {
+                            if (this.data.get(j).toString().trim().charAt(0) == "\"" && this.data.get(j).toString().trim().endsWith("\"")) {
+                                dataStr = dataStr + this.data.get(j).toString().trim().substring(1, this.data.get(j).toString().trim().length - 1);
+                                j++;
+                            } else {
+                                break;
+                            }
+                        }
+                        resultData.add(this.data.get(i).toString().trim() + " \"" + dataStr + "\"");
+                        i = j - 1;
+                        dataStr = "";
                         continue;
                     }
-                } else if (this.data.get(i).toString().trim() == ".word") {
+                } else if (this.data.get(i).toString().trim() == ".word" || this.data.get(i).toString().trim() == ".byte") {
                     if (i == this.data.size() - 1) {
-                        return true;
-                    } else if (pattnumber.test(this.data.get(i + 1).toString().trim())) {
-                        resultData.add(".word " + this.data.get(i + 1).toString().trim());
-                        i++;
-                        continue;
+                        break;
                     } else {
-                        continue;
-                    }
-                } else if (this.data.get(i).toString().trim() == ".byte") {
-                    if (i == this.data.size() - 1) {
-                        return true;
-                    } else if (pattnumber.test(this.data.get(i + 1).toString().trim())) {
-                        resultData.add(".byte " + this.data.get(i + 1).toString().trim());
-                        i++;
-                        continue;
-                    } else {
+                        j = i + 1;
+                        while (j != this.data.size()) {
+                            if (pattnumber.test(this.data.get(j).toString().trim())) {
+                                dataStr = dataStr + this.data.get(j).toString().trim() + ",";
+                                j++;
+                            } else {
+                                break;
+                            }
+                        }
+                        if (dataStr.endsWith(",")) {
+                            dataStr = dataStr.substring(0, dataStr.length - 1);
+                        }
+                        resultData.add(this.data.get(i).toString().trim() + " " + dataStr);
+                        i = j - 1;
+                        dataStr = "";
                         continue;
                     }
                 } else {
-                    posOfSpace = this.data.get(i).toString().indexOf(" ");
-                    if (this.data.get(i).toString().substring(0, posOfSpace) == ".word" || this.data.get(i).toString().substring(0, posOfSpace) == ".byte" || this.data.get(i).toString().trim().substring(0, 6) == ".ascii" || this.data.get(i).toString().substring(0, 7) == ".asciiz") {
-                        resultData.add(this.data.get(i).toString().trim());
+                    posOfSpace = this.data.get(i).toString().trim().indexOf(" ");
+                    posOfQuo = this.data.get(i).toString().trim().indexOf("\"");
+                    if (this.data.get(i).toString().trim().substring(0, posOfSpace) == ".word" || this.data.get(i).toString().trim().substring(0, posOfSpace) == ".byte") {
+                        if (i == this.data.size() - 1) {
+                            resultData.add(this.data.get(i).toString().trim());
+                            break;
+                        } else {
+                            j = i + 1;
+                            dataStr = this.data.get(i).toString().substring(posOfSpace).trim() + ",";
+                            while (j != this.data.size()) {
+                                if (pattnumber.test(this.data.get(j).toString().trim())) {
+                                    dataStr = dataStr + this.data.get(j).toString().trim() + ",";
+                                    j++;
+                                } else {
+                                    break;
+                                }
+                            }
+                            if (dataStr.endsWith(",")) {
+                                dataStr = dataStr.substring(0, dataStr.length - 1);
+                            }
+                            resultData.add(this.data.get(i).toString().trim().substring(0, posOfSpace) + " " + dataStr);
+                            i = j - 1;
+                            dataStr = "";
+                            continue;
+                        }
+                    } else if (this.data.get(i).toString().trim().substring(0, posOfQuo).trim() == ".ascii" || this.data.get(i).toString().trim().substring(0, posOfQuo).trim() == ".asciiz") {
+                        if (i == this.data.size() - 1) {
+                            resultData.add(this.data.get(i).toString().trim().substring(0, posOfQuo).trim() + " " + this.data.get(i).toString().trim().substring(posOfQuo).trim());
+                            break;
+                        } else {
+                            j = i + 1;
+                            dataStr = this.data.get(i).toString().trim().substring(posOfQuo).trim().substring(1, this.data.get(i).toString().trim().substring(posOfQuo).trim().length - 1);
+                            while (j != this.data.size()) {
+                                if (this.data.get(j).toString().trim().charAt(0) == "\"" && this.data.get(j).toString().trim().endsWith("\"")) {
+                                    dataStr = dataStr + this.data.get(j).toString().trim().substring(1, this.data.get(j).toString().trim().length - 1);
+                                    j++;
+                                } else {
+                                    break;
+                                }
+                            }
+                            resultData.add(this.data.get(i).toString().trim().substring(0, posOfQuo).trim() + " \"" + dataStr + "\"");
+                            i = j - 1;
+                            dataStr = "";
+                            continue;
+                        }
                     } else {
                         this.errMsg = this.errMsg + "Error 336: Invalid instruction. -- " + this.data.get(i) + "\n";
                         return false;
@@ -450,8 +682,8 @@ export class Assembler {
                 posOfSpace = insAfterLabel.indexOf(" ");
                 dataIns = insAfterLabel.substring(0, posOfSpace);
                 if (dataIns == ".word") {
-                    if (insAfterLabel.substring(posOfSpace, ins.length).trim().indexOf(",") != -1) {
-                        let wordArray = insAfterLabel.substring(posOfSpace, ins.length).trim().split(",");
+                    if (insAfterLabel.substring(posOfSpace).trim().indexOf(",") != -1) {
+                        let wordArray = insAfterLabel.substring(posOfSpace).trim().split(",");
                         for (j = 0; j < wordArray.length; j++) {
                             if (!patt.test(wordArray[j])) {
                                 this.errMsg = this.errMsg + "Error 304: Invalid data type. -- " + this.data.get(i) + "\n";
@@ -470,14 +702,14 @@ export class Assembler {
                             }
                         }
                     } else {
-                        if (insAfterLabel.substring(posOfSpace, ins.length).trim() == "") {
+                        if (insAfterLabel.substring(posOfSpace).trim() == "") {
                             continue;
                         }
-                        if (patt.test(insAfterLabel.substring(posOfSpace, ins.length).trim())) {
+                        if (!patt.test(insAfterLabel.substring(posOfSpace).trim())) {
                             this.errMsg = this.errMsg + "Error 306: Invalid data type. -- " + this.data.get(i) + "\n";
                             return false;
                         } else {
-                            let wordNumber: number = +ins.substring(posOfSpace, ins.length).trim();
+                            let wordNumber: number = +insAfterLabel.substring(posOfSpace).trim();
                             if (wordNumber > 2147483647 || wordNumber < -2147483648) {
                                 this.errMsg = this.errMsg + "Error 307: Data value out of range. -- " + this.data.get(i) + "\n";
                                 return false;
@@ -493,8 +725,8 @@ export class Assembler {
                         }
                     }
                 } else if (dataIns == ".byte") {
-                    if (insAfterLabel.substring(posOfSpace, ins.length).trim().indexOf(",") != -1) {
-                        let byteArray = insAfterLabel.substring(posOfSpace, ins.length).trim().split(",");
+                    if (insAfterLabel.substring(posOfSpace).trim().indexOf(",") != -1) {
+                        let byteArray = insAfterLabel.substring(posOfSpace).trim().split(",");
                         for (j = 0; j < byteArray.length; j++) {
                             if (!patt.test(byteArray[j])) {
                                 this.errMsg = this.errMsg + "Error 308: Invalid data type. -- " + this.data.get(i) + "\n";
@@ -508,14 +740,14 @@ export class Assembler {
                             }
                         }
                     } else {
-                        if (insAfterLabel.substring(posOfSpace, ins.length).trim() == "") {
+                        if (insAfterLabel.substring(posOfSpace).trim() == "") {
                             continue;
                         }
-                        if (!patt.test(ins.substring(posOfSpace, ins.length).trim())) {
+                        if (!patt.test(insAfterLabel.substring(posOfSpace).trim())) {
                             this.errMsg = this.errMsg + "Error 310: Invalid data type. -- " + this.data.get(i) + "\n";
                             return false;
                         } else {
-                            let byteNumber: number = +insAfterLabel.substring(posOfSpace, ins.length).trim();
+                            let byteNumber: number = +insAfterLabel.substring(posOfSpace).trim();
                             if (byteNumber > 127 || byteNumber < -128) {
                                 this.errMsg = this.errMsg + "Error 311: Data value out of range. -- " + this.data.get(i) + "\n";
                                 return false;
@@ -526,7 +758,7 @@ export class Assembler {
                         }
                     }
                 } else if (dataIns == ".ascii" || dataIns == ".asciiz") {
-                    if (insAfterLabel.substring(posOfSpace, ins.length).trim().charAt(0) != "\"" || !insAfterLabel.substring(posOfSpace, ins.length).trim().endsWith("\"")) {
+                    if (insAfterLabel.substring(posOfSpace).trim().charAt(0) != "\"" || !insAfterLabel.substring(posOfSpace).trim().endsWith("\"")) {
                         this.errMsg = this.errMsg + "Error 312: Invalid string. -- " + this.data.get(i) + "\n";
                         return false;
                     } else {
@@ -538,13 +770,16 @@ export class Assembler {
                             address = (+address + insAfterLabel.substring(posOfSpace + 2, insAfterLabel.length - 1).length + 1).toFixed();
                         }
                     }
+                } else {
+                    this.errMsg = this.errMsg + "Error 337: Invalid instruction. -- " + this.data.get(i) + "\n";
+                    return false;
                 }
             } else {
                 posOfSpace = ins.indexOf(" ");
                 dataIns = ins.substring(0, posOfSpace);
                 if (dataIns == ".word") {
-                    if (ins.substring(posOfSpace, ins.length).trim().indexOf(",") != -1) {
-                        let wordArray = ins.substring(posOfSpace, ins.length).trim().split(",");
+                    if (ins.substring(posOfSpace).trim().indexOf(",") != -1) {
+                        let wordArray = ins.substring(posOfSpace).trim().split(",");
                         for (j = 0; j < wordArray.length; j++) {
                             if (!patt.test(wordArray[j])) {
                                 this.errMsg = this.errMsg + "Error 313: Invalid data type. -- " + this.data.get(i) + "\n";
