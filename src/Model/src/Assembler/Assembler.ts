@@ -973,8 +973,9 @@ export class Assembler {
                             if (+operand1 >= -32768 && +operand1 <= 32767) {
                                 ins0 = "addiu " + operand0 + ",$0," + operand1;
                             } else if (+operand1 >= -2147483648 && +operand1 <= 2147483647) {
-                                let first16bits = binaryToDecimal(operand1.substring(0, 16));
-                                let last16bits = binaryToDecimal(operand1.substring(16));
+                                let im = decimalToBinary(+operand1, 32);
+                                let first16bits = binaryToDecimal(im.substring(0,16));
+                                let last16bits = binaryToDecimal(im.substring(16));
                                 ins0 = "lui $1," + first16bits;
                                 ins1 = "ori " + operand0 + ",$1," + last16bits;
                             } else {
