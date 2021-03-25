@@ -82,7 +82,7 @@ export class DecoderForI extends Decoder {
         if (!patt3.test(IMM)) {
             this.errMsg = this.errMsg + "Error 202: Invalid immediate number. -- " + this.getIns() + "\n";
             return false;
-        } else if (+IMM <= -32768 || +IMM >= 32767) {
+        } else if (+IMM < -32768 || +IMM > 32767) {
             this.errMsg = this.errMsg + "Error 203: Invalid immediate number. Out of range. -- " + this.getIns() + "\n";
             return false;
         }
