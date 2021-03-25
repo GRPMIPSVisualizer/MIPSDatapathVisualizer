@@ -1082,6 +1082,9 @@ export class Assembler {
         for (i = 0; i < this.sourceIns.length; i++) {
             if (this.sourceIns[i] == "" || patt.test(this.sourceIns[i]) || this.sourceIns[i].substring(this.sourceIns[i].length - 1, this.sourceIns[i].length) == ":") {
                 instructionCounter++;
+                if (this.sourceIns[i].substring(this.sourceIns[i].length - 1, this.sourceIns[i].length) == ":") {
+                    instructionCounter--;
+                }
                 continue;
             } else {
                 posOfSpace = this.sourceIns[i].indexOf(" ");
@@ -1090,9 +1093,9 @@ export class Assembler {
                     jumpLabel = this.sourceIns[i].substring(posOfSpace, this.sourceIns[i].length).trim();
                     if (mapForLabel.has(jumpLabel)) {
                         if (operator == "j") {
-                            this.sourceIns[i] = "j " + mapForLabel.get(jumpLabel);
+                            this.sourceIns[i] = "j " + +(mapForLabel.get(jumpLabel) + "")/4;
                         } else {
-                            this.sourceIns[i] = "jal " + mapForLabel.get(jumpLabel);
+                            this.sourceIns[i] = "jal " + +(mapForLabel.get(jumpLabel) + "")/4;
                         }
                     } else {
                         this.errMsg = this.errMsg + "Error 329: Operand is of incorrect type. -- " + this.sourceIns[i] + "\n";
@@ -1102,9 +1105,6 @@ export class Assembler {
                     jumpLabel = this.sourceIns[i].substring(this.sourceIns[i].lastIndexOf(",") + 1, this.sourceIns[i].length).trim();
                     if (mapForLabel.has(jumpLabel)) {
                         relativeJump = +(mapForCounter.get(jumpLabel) + "") - instructionCounter - 1;
-                        if (relativeJump < 0) {
-                            relativeJump++;
-                        }
                         if (operator == "beq") {
                             this.sourceIns[i] = "beq" + this.sourceIns[i].substring(posOfSpace, this.sourceIns[i].lastIndexOf(",") + 1) + relativeJump.toFixed();
                         } else {
