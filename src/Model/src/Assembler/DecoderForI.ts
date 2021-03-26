@@ -1,5 +1,5 @@
-import {Decoder} from "./Decoder";
-import {InstructionI} from "./InstructionI";
+import { Decoder } from "./Decoder";
+import { InstructionI } from "./InstructionI";
 import { MapForRegister } from "./MapForRegister";
 
 /**
@@ -19,7 +19,7 @@ export class DecoderForI extends Decoder {
     /**
      * Constructor of DecoderForI.
      */
-    private constructor(){
+    private constructor() {
         super();
     }
 
@@ -50,11 +50,11 @@ export class DecoderForI extends Decoder {
             operandRT = operands[1];
             IMM = operands[2];
         } else if (this.operator == "addi" ||
-                   this.operator == "addiu" ||
-                   this.operator == "andi" ||
-                   this.operator == "ori" ||
-                   this.operator == "slti" ||
-                   this.operator == "sltiu" ) {
+            this.operator == "addiu" ||
+            this.operator == "andi" ||
+            this.operator == "ori" ||
+            this.operator == "slti" ||
+            this.operator == "sltiu") {
             let operands: string[] = this.ins.substring(posOfSpace + 1, this.ins.length).split(",", 3);
             operandRT = operands[0];
             operandRS = operands[1];
@@ -70,7 +70,7 @@ export class DecoderForI extends Decoder {
             let leftBracket: number = operands[1].indexOf("(");
             let rightBracket: number = operands[1].indexOf(")");
             operandRT = operands[0];
-            operandRS = operands[1].substring(leftBracket + 1, rightBracket); 
+            operandRS = operands[1].substring(leftBracket + 1, rightBracket);
             IMM = operands[1].substring(0, leftBracket);
         }
 
@@ -78,15 +78,22 @@ export class DecoderForI extends Decoder {
         let patt2 = /^[a-z0-9]+$/;
         let patt3 = /^(\-|\+)?\d+$/;
 
-         
+
         if (!patt3.test(IMM)) {
             this.errMsg = this.errMsg + "Error 202: Invalid immediate number. -- " + this.getIns() + "\n";
             return false;
-        } else if (+IMM < -32768 || +IMM > 32767) {
-            this.errMsg = this.errMsg + "Error 203: Invalid immediate number. Out of range. -- " + this.getIns() + "\n";
-            return false;
+        } else if (this.operator != "andi" && this.operator != "ori") {
+            if (+IMM < -32768 || +IMM > 32767) {
+                this.errMsg = this.errMsg + "Error 203: Invalid immediate number. Out of range. -- " + this.getIns() + "\n";
+                return false;
+            } else {
+                if (+IMM < -65536 || +IMM > 65535) {
+                    this.errMsg = this.errMsg + "Error 208: Invalid immediate number. Out of range. -- " + this.getIns() + "\n";
+                    return false;
+                }
+            }
         }
-        
+
 
         let operands: Array<string> = [operandRS, operandRT];
         let i: number;
@@ -115,10 +122,10 @@ export class DecoderForI extends Decoder {
                 return false;
             }
         }
-        
+
         return true;
     }
-    
+
     /**
      * Method for decoding the instruction of type-I into binary code.
      * @returns void

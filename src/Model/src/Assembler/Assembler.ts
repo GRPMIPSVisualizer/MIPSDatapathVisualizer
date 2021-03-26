@@ -7,6 +7,7 @@ import { ArrayList } from "./ArrayList";
 import { trimSpace } from "./TrimSpace";
 import { decimalToBinary } from "./DecimalToBinary";
 import { binaryToDecimal } from "./BinaryToDecimal";
+import { binaryToUnsignedDecimal } from "./BinaryToUnsigendDecimal";
 
 /**
  * Class Assembler is for an assembler to validate the MIPS code and change the MIPS code into binary code.
@@ -974,8 +975,8 @@ export class Assembler {
                                 ins0 = "addiu " + operand0 + ",$0," + operand1;
                             } else if (+operand1 >= -2147483648 && +operand1 <= 2147483647) {
                                 let im = decimalToBinary(+operand1, 32);
-                                let first16bits = binaryToDecimal(im.substring(0,16));
-                                let last16bits = binaryToDecimal(im.substring(16));
+                                let first16bits = binaryToUnsignedDecimal(im.substring(0,16));
+                                let last16bits = binaryToUnsignedDecimal(im.substring(16));
                                 ins0 = "lui $1," + first16bits;
                                 ins1 = "ori " + operand0 + ",$1," + last16bits;
                             } else {
