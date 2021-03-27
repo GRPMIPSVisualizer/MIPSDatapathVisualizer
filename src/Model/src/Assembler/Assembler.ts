@@ -986,8 +986,8 @@ export class Assembler {
                         } else if (operator == "la") {
                             if (this.mapForDataLabel.has(operand1.trim())) {
                                 let address: string = decimalToBinary(+(this.mapForDataLabel.get(operand1) + ""), 32);
-                                let first16bits = binaryToDecimal(address.substring(0, 16));
-                                let last16bits = binaryToDecimal(address.substring(16));
+                                let first16bits = binaryToUnsignedDecimal(address.substring(0, 16));
+                                let last16bits = binaryToUnsignedDecimal(address.substring(16));
                                 ins0 = "lui $1," + first16bits;
                                 ins1 = "ori " + operand0 + ",$1," + last16bits;
                             } else {
