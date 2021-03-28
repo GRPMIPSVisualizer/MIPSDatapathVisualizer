@@ -1001,7 +1001,7 @@ export class Assembler {
                             ins1 = "ori $1,$0,1";
                             ins2 = "subu " + operand0 + ",$1," + operand0;
                         } else if (operator == "sgt") {
-                            ins0 = "slt" + operand0 + "," + operand2 + "," + operand1;
+                            ins0 = "slt " + operand0 + "," + operand2 + "," + operand1;
                         }
 
                         if (ins0 != "") {
