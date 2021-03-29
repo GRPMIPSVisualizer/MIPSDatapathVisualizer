@@ -6,7 +6,6 @@ import { MapForInsType } from "./MapForInsType";
 import { ArrayList } from "./ArrayList";
 import { trimSpace } from "./TrimSpace";
 import { decimalToBinary } from "./DecimalToBinary";
-import { binaryToDecimal } from "./BinaryToDecimal";
 import { binaryToUnsignedDecimal } from "./BinaryToUnsigendDecimal";
 
 /**
@@ -910,6 +909,9 @@ export class Assembler {
         let operator: string;
         let temp: Array<string> = [];
         for (i = 0; i < this.sourceIns.length; i++) {
+            this.sourceIns.splice(i, 1, trimSpace(this.sourceIns[i]));
+        }
+        for (i = 0; i < this.sourceIns.length; i++) {
             if (this.sourceIns[i] == "syscall") {
                 temp.push(this.sourceIns[i]);
                 continue;
@@ -975,14 +977,14 @@ export class Assembler {
                                 ins0 = "addiu " + operand0 + ",$0," + operand1;
                             } else if (+operand1 >= -2147483648 && +operand1 <= 2147483647) {
                                 let im = decimalToBinary(+operand1, 32);
-                                let first16bits = binaryToUnsignedDecimal(im.substring(0,16));
+                                let first16bits = binaryToUnsignedDecimal(im.substring(0, 16));
                                 let last16bits = binaryToUnsignedDecimal(im.substring(16));
                                 ins0 = "lui $1," + first16bits;
                                 ins1 = "ori " + operand0 + ",$1," + last16bits;
                             } else {
                                 this.errMsg = this.errMsg + "Error 338: Operand is out of range. -- " + this.sourceIns[i] + "\n";
                                 return false;
-                            }                           
+                            }
                         } else if (operator == "la") {
                             if (this.mapForDataLabel.has(operand1.trim())) {
                                 let address: string = decimalToBinary(+(this.mapForDataLabel.get(operand1) + ""), 32);
@@ -1095,9 +1097,9 @@ export class Assembler {
                     jumpLabel = this.sourceIns[i].substring(posOfSpace, this.sourceIns[i].length).trim();
                     if (mapForLabel.has(jumpLabel)) {
                         if (operator == "j") {
-                            this.sourceIns[i] = "j " + +(mapForLabel.get(jumpLabel) + "")/4;
+                            this.sourceIns[i] = "j " + +(mapForLabel.get(jumpLabel) + "") / 4;
                         } else {
-                            this.sourceIns[i] = "jal " + +(mapForLabel.get(jumpLabel) + "")/4;
+                            this.sourceIns[i] = "jal " + +(mapForLabel.get(jumpLabel) + "") / 4;
                         }
                     } else {
                         this.errMsg = this.errMsg + "Error 329: Operand is of incorrect type. -- " + this.sourceIns[i] + "\n";
