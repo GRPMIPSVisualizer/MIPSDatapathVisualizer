@@ -337,7 +337,7 @@ export class Assembler {
         let posOfColon: number;
         let label: string;
         let pattLabel = /^[A-Za-z0-9._]+$/;
-        let pattnumber = /^[0-9,+-]+$/;
+        let pattnumber = /^[0-9,+-,\s+]+$/;
         let resultData: ArrayList<string> = new ArrayList<string>();
         let posOfSpace: number;
         let posOfQuo: number;
@@ -682,6 +682,7 @@ export class Assembler {
                 posOfSpace = insAfterLabel.indexOf(" ");
                 dataIns = insAfterLabel.substring(0, posOfSpace);
                 if (dataIns == ".word") {
+                    insAfterLabel = dataIns + " " + insAfterLabel.substring(posOfSpace).trim().replace(/\s+/g, ",");
                     if (insAfterLabel.substring(posOfSpace).trim().indexOf(",") != -1) {
                         let wordArray = insAfterLabel.substring(posOfSpace).trim().split(",");
                         for (j = 0; j < wordArray.length; j++) {
@@ -725,6 +726,7 @@ export class Assembler {
                         }
                     }
                 } else if (dataIns == ".byte") {
+                    insAfterLabel = dataIns + " " + insAfterLabel.substring(posOfSpace).trim().replace(/\s+/g, ",");
                     if (insAfterLabel.substring(posOfSpace).trim().indexOf(",") != -1) {
                         let byteArray = insAfterLabel.substring(posOfSpace).trim().split(",");
                         for (j = 0; j < byteArray.length; j++) {
@@ -778,6 +780,7 @@ export class Assembler {
                 posOfSpace = ins.indexOf(" ");
                 dataIns = ins.substring(0, posOfSpace);
                 if (dataIns == ".word") {
+                    ins = dataIns + " " + ins.substring(posOfSpace).trim().replace(/\s+/g, ",");
                     if (ins.substring(posOfSpace).trim().indexOf(",") != -1) {
                         let wordArray = ins.substring(posOfSpace).trim().split(",");
                         for (j = 0; j < wordArray.length; j++) {
@@ -821,6 +824,7 @@ export class Assembler {
                         }
                     }
                 } else if (dataIns == ".byte") {
+                    ins = dataIns + " " + ins.substring(posOfSpace).trim().replace(/\s+/g, ",");
                     if (ins.substring(posOfSpace, ins.length).trim().indexOf(",") != -1) {
                         let byteArray = ins.substring(posOfSpace, ins.length).trim().split(",");
                         for (j = 0; j < byteArray.length; j++) {
