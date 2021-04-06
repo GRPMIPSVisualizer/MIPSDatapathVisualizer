@@ -768,7 +768,7 @@ export class Assembler {
                             this.mapForAscii.set(address, insAfterLabel.substring(posOfSpace + 2, insAfterLabel.length - 1));
                             address = (+address + insAfterLabel.substring(posOfSpace + 2, insAfterLabel.length - 1).length).toFixed();
                         } else {
-                            this.mapForAscii.set(address, insAfterLabel.substring(posOfSpace + 2, insAfterLabel.length - 1) + "\n");
+                            this.mapForAscii.set(address, insAfterLabel.substring(posOfSpace + 2, insAfterLabel.length - 1) + "\0");
                             address = (+address + insAfterLabel.substring(posOfSpace + 2, insAfterLabel.length - 1).length + 1).toFixed();
                         }
                     }
@@ -862,7 +862,11 @@ export class Assembler {
                         this.errMsg = this.errMsg + "Error 321: Invalid string. -- " + this.data.get(i) + "\n";
                         return false;
                     } else {
-                        this.mapForAscii.set(address, ins.substring(posOfSpace + 2, ins.length - 1));
+                        if (dataIns == ".asciiz") {
+                            this.mapForAscii.set(address, ins.substring(posOfSpace + 2, ins.length - 1) + "\0");
+                        } else {
+                            this.mapForAscii.set(address, ins.substring(posOfSpace + 2, ins.length - 1));
+                        }
                         if (dataIns == ".ascii") {
                             address = (+address + ins.substring(posOfSpace + 2, ins.length - 1).length).toFixed();
                         } else {
