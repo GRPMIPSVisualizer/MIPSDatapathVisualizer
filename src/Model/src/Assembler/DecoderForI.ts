@@ -79,6 +79,9 @@ export class DecoderForI extends Decoder {
         let patt3 = /^(\-|\+)?\d+$/;
 
 
+        if (IMM == "") {
+            IMM = "0";
+        }
         if (!patt3.test(IMM)) {
             this.errMsg = this.errMsg + "Error 202: Invalid immediate number. -- " + this.getIns() + "\n";
             return false;
