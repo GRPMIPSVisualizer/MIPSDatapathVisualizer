@@ -79,7 +79,7 @@ export class DecoderForI extends Decoder {
         let patt3 = /^(\-|\+)?\d+$/;
 
 
-        if (IMM == "") {
+        if (IMM == "" && (this.operator == "lbu" || this.operator == "lhu" || this.operator == "ll" || this.operator == "lw" || this.operator == "sb" || this.operator == "sc" || this.operator == "sh" || this.operator == "sw")) {
             IMM = "0";
         }
         if (!patt3.test(IMM)) {
