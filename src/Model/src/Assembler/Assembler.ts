@@ -1079,6 +1079,7 @@ export class Assembler {
                             mapForLabel.set(label, address);
                             labelCounter = instructionCounter;
                             mapForCounter.set(label, labelCounter.toFixed());
+                            continue;
                         }
                     } else {
                         this.errMsg = this.errMsg + "Error 328: Invalid label. -- " + this.sourceIns[i] + "\n";
