@@ -74,13 +74,24 @@ class DecoderForI extends Decoder_1.Decoder {
         let patt1 = /^[0-9]+$/;
         let patt2 = /^[a-z0-9]+$/;
         let patt3 = /^(\-|\+)?\d+$/;
+        if (IMM == "" && (this.operator == "lbu" || this.operator == "lhu" || this.operator == "ll" || this.operator == "lw" || this.operator == "sb" || this.operator == "sc" || this.operator == "sh" || this.operator == "sw")) {
+            IMM = "0";
+        }
         if (!patt3.test(IMM)) {
             this.errMsg = this.errMsg + "Error 202: Invalid immediate number. -- " + this.getIns() + "\n";
             return false;
         }
-        else if (+IMM <= -32768 || +IMM >= 32767) {
-            this.errMsg = this.errMsg + "Error 203: Invalid immediate number. Out of range. -- " + this.getIns() + "\n";
-            return false;
+        if (this.operator != "andi" && this.operator != "ori") {
+            if (+IMM < -32768 || +IMM > 32767) {
+                this.errMsg = this.errMsg + "Error 203: Invalid immediate number. Out of range. -- " + this.getIns() + "\n";
+                return false;
+            }
+        }
+        else {
+            if (+IMM < 0 || +IMM > 65535) {
+                this.errMsg = this.errMsg + "Error 208: Invalid immediate number. Out of range. -- " + this.getIns() + "\n";
+                return false;
+            }
         }
         let operands = [operandRS, operandRT];
         let i;

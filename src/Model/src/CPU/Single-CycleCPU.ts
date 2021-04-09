@@ -753,6 +753,7 @@ export class singleCycleCpu{
      * @returns nothing
      */
     private syscall():void{
+        this.StdOut = "";
         let registers:string[] = this.debugReg();
         let v0:number = bin2dec(registers[2],true);
         if (v0 == 1){
@@ -767,7 +768,7 @@ export class singleCycleCpu{
                 excepReporter.addException("syscall print_str error: no such address!");
                 this.Errormsg =  this.reportExceptions();
             }else{
-                this.StdOut = print_str;
+                this.StdOut = print_str.slice(0,print_str.length-1);
             }
             return;
         }
@@ -835,8 +836,23 @@ export class singleCycleCpu{
      * @returns the string user input on console
      */
     public readFromConsole(readCode:number):string{
-        // 你们来写，把用户输入在console上的东西作为一个string返回
-        return "";
+        let ret:string|null = null;
+        if(readCode == 5){
+            ret = prompt("Please input an integer");
+        }
+        else if(readCode == 8){
+            ret = prompt("Please input a string");
+        }
+        else if(readCode == 12){
+            ret = prompt("Please input a character");
+        }
+        if (ret == null){
+            let excepReporter:ExceptionReporter = ExceptionReporter.getReporter();
+            excepReporter.addException("No input detected!");
+            this.Errormsg =  this.reportExceptions();
+            return "";
+        }
+        return ret;
     }
 
     /**
@@ -869,7 +885,9 @@ export class singleCycleCpu{
         this.ALUAdderB = this.ALUADD.getInpinB();
         this.signExtendOUT = this._signExtend.getOutPin32();
         this.currentInsAddr = this._Memory.getTextAddress();
-        this.Errormsg =  this.reportExceptions();
+        if (this.Errormsg == ""){
+            this.Errormsg =  this.reportExceptions();
+        }
         
         this.changeClockSignal();
     }
@@ -1044,8 +1062,39 @@ export class singleCycleCpu{
                     let tempChars:string = asciiMap.get(key) as string;
                     let datum:string = "";
                     let currentAddr:number = +key;
+
                     for (let i:number = 0;i < tempChars.length;++i){
-                        datum = decToSignedBin32(tempChars.charCodeAt(i));
+                        if (tempChars.charCodeAt(i) == 92){
+                            i++;
+                            datum = decToSignedBin32(tempChars.charCodeAt(i));
+                            if (tempChars.charAt(i) == 'n'){
+                                datum = decToSignedBin32(10);
+                            }
+                            if (tempChars.charAt(i) == 'r'){
+                                datum = decToSignedBin32(13);
+                            }
+                            if (tempChars.charAt(i) == 't'){
+                                datum = decToSignedBin32(9);
+                            }
+                            if (tempChars.charAt(i) == 'b'){
+                                datum = decToSignedBin32(8);
+                            }
+                            if (tempChars.charAt(i) == 'f'){
+                                datum = decToSignedBin32(12);
+                            }
+                            if (tempChars.charAt(i) == 'v'){
+                                datum = decToSignedBin32(11);
+                            }
+                            if (tempChars.charAt(i) == '0'){
+                                datum = decToSignedBin32(0);
+                            }
+                            let newStr:string = asciiMap.get(key) as string;
+                            newStr = newStr.slice(0,i-1) + String.fromCharCode(bin2dec(datum,true)) + newStr.slice(i+1,newStr.length);
+                            asciiMap.set(key,newStr);
+                        }else{
+                            datum = decToSignedBin32(tempChars.charCodeAt(i));
+                        }
+
                         this._Memory.storeByteStaticData([currentAddr+"",datum.slice(24,32)]);
                         ++currentAddr;
                     }

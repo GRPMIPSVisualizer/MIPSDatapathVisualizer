@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.binaryToDecimal = void 0;
 /**
- * Translate a 16-bits binary number into decimal number.
+ * Translate a 16-bits two's complement binary number into decimal number.
  * @param bin a string of a binary number(must be 16-bits) to be translated.
  * @returns a number which is the decimal format of the binary number, or 0 if the binary number is not 16-bits.
  */

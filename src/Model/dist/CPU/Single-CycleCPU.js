@@ -610,6 +610,7 @@ class singleCycleCpu {
      * @returns nothing
      */
     syscall() {
+        this.StdOut = "";
         let registers = this.debugReg();
         let v0 = StringHandle_1.bin2dec(registers[2], true);
         if (v0 == 1) {
@@ -625,7 +626,7 @@ class singleCycleCpu {
                 this.Errormsg = this.reportExceptions();
             }
             else {
-                this.StdOut = print_str;
+                this.StdOut = print_str.slice(0, print_str.length - 1);
             }
             return;
         }
@@ -687,8 +688,23 @@ class singleCycleCpu {
      * @returns the string user input on console
      */
     readFromConsole(readCode) {
-        // 你们来写，把用户输入在console上的东西作为一个string返回
-        return "";
+        let ret = null;
+        if (readCode == 5) {
+            ret = prompt("Please input an integer");
+        }
+        else if (readCode == 8) {
+            ret = prompt("Please input a string");
+        }
+        else if (readCode == 12) {
+            ret = prompt("Please input a character");
+        }
+        if (ret == null) {
+            let excepReporter = ExceptionReporter_1.ExceptionReporter.getReporter();
+            excepReporter.addException("No input detected!");
+            this.Errormsg = this.reportExceptions();
+            return "";
+        }
+        return ret;
     }
     /**
      * change clock signal twice<br/>
@@ -718,7 +734,9 @@ class singleCycleCpu {
         this.ALUAdderB = this.ALUADD.getInpinB();
         this.signExtendOUT = this._signExtend.getOutPin32();
         this.currentInsAddr = this._Memory.getTextAddress();
-        this.Errormsg = this.reportExceptions();
+        if (this.Errormsg == "") {
+            this.Errormsg = this.reportExceptions();
+        }
         this.changeClockSignal();
     }
     /**
@@ -876,7 +894,37 @@ class singleCycleCpu {
                     let datum = "";
                     let currentAddr = +key;
                     for (let i = 0; i < tempChars.length; ++i) {
-                        datum = StringHandle_1.decToSignedBin32(tempChars.charCodeAt(i));
+                        if (tempChars.charCodeAt(i) == 92) {
+                            i++;
+                            datum = StringHandle_1.decToSignedBin32(tempChars.charCodeAt(i));
+                            if (tempChars.charAt(i) == 'n') {
+                                datum = StringHandle_1.decToSignedBin32(10);
+                            }
+                            if (tempChars.charAt(i) == 'r') {
+                                datum = StringHandle_1.decToSignedBin32(13);
+                            }
+                            if (tempChars.charAt(i) == 't') {
+                                datum = StringHandle_1.decToSignedBin32(9);
+                            }
+                            if (tempChars.charAt(i) == 'b') {
+                                datum = StringHandle_1.decToSignedBin32(8);
+                            }
+                            if (tempChars.charAt(i) == 'f') {
+                                datum = StringHandle_1.decToSignedBin32(12);
+                            }
+                            if (tempChars.charAt(i) == 'v') {
+                                datum = StringHandle_1.decToSignedBin32(11);
+                            }
+                            if (tempChars.charAt(i) == '0') {
+                                datum = StringHandle_1.decToSignedBin32(0);
+                            }
+                            let newStr = asciiMap.get(key);
+                            newStr = newStr.slice(0, i - 1) + String.fromCharCode(StringHandle_1.bin2dec(datum, true)) + newStr.slice(i + 1, newStr.length);
+                            asciiMap.set(key, newStr);
+                        }
+                        else {
+                            datum = StringHandle_1.decToSignedBin32(tempChars.charCodeAt(i));
+                        }
                         this._Memory.storeByteStaticData([currentAddr + "", datum.slice(24, 32)]);
                         ++currentAddr;
                     }

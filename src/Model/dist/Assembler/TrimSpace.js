@@ -7,13 +7,18 @@ exports.trimSpace = void 0;
  * @returns a string without spaces in it except the first space.
  */
 function trimSpace(str) {
-    let result = "";
-    let tempString = str.trim();
-    let posOfFirstSpace = tempString.indexOf(" ");
-    let beforeSpace = tempString.substring(0, posOfFirstSpace + 1);
-    let afterSpace = tempString.substring(posOfFirstSpace + 1, tempString.length).replace(/\s+/g, "");
-    result = beforeSpace + afterSpace;
-    return result;
+    if (str.indexOf(" ") != -1) {
+        let result = "";
+        let tempString = str.trim();
+        let posOfFirstSpace = tempString.indexOf(" ");
+        let beforeSpace = tempString.substring(0, posOfFirstSpace + 1);
+        let afterSpace = tempString.substring(posOfFirstSpace + 1, tempString.length).replace(/\s+/g, "");
+        result = beforeSpace + afterSpace;
+        return result;
+    }
+    else {
+        return str;
+    }
 }
 exports.trimSpace = trimSpace;
 //# sourceMappingURL=TrimSpace.js.map

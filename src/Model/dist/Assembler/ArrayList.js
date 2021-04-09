@@ -77,7 +77,8 @@ class ArrayList {
      * @returns void
      */
     clear() {
-        this.elementData = [];
+        this.elementData.splice(0, this.sizeNum);
+        this.sizeNum = 0;
     }
     /**
      * Get the size of the ArrayList

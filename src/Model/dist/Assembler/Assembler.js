@@ -9,7 +9,7 @@ const MapForInsType_1 = require("./MapForInsType");
 const ArrayList_1 = require("./ArrayList");
 const TrimSpace_1 = require("./TrimSpace");
 const DecimalToBinary_1 = require("./DecimalToBinary");
-const BinaryToDecimal_1 = require("./BinaryToDecimal");
+const BinaryToUnsigendDecimal_1 = require("./BinaryToUnsigendDecimal");
 /**
  * Class Assembler is for an assembler to validate the MIPS code and change the MIPS code into binary code.
  *
@@ -322,7 +322,7 @@ class Assembler {
         let posOfColon;
         let label;
         let pattLabel = /^[A-Za-z0-9._]+$/;
-        let pattnumber = /^[0-9,+-]+$/;
+        let pattnumber = /^[0-9,+-,\s+]+$/;
         let resultData = new ArrayList_1.ArrayList();
         let posOfSpace;
         let posOfQuo;
@@ -708,6 +708,7 @@ class Assembler {
                 posOfSpace = insAfterLabel.indexOf(" ");
                 dataIns = insAfterLabel.substring(0, posOfSpace);
                 if (dataIns == ".word") {
+                    insAfterLabel = dataIns + " " + insAfterLabel.substring(posOfSpace).trim().replace(/\s+/g, ",");
                     if (insAfterLabel.substring(posOfSpace).trim().indexOf(",") != -1) {
                         let wordArray = insAfterLabel.substring(posOfSpace).trim().split(",");
                         for (j = 0; j < wordArray.length; j++) {
@@ -759,6 +760,7 @@ class Assembler {
                     }
                 }
                 else if (dataIns == ".byte") {
+                    insAfterLabel = dataIns + " " + insAfterLabel.substring(posOfSpace).trim().replace(/\s+/g, ",");
                     if (insAfterLabel.substring(posOfSpace).trim().indexOf(",") != -1) {
                         let byteArray = insAfterLabel.substring(posOfSpace).trim().split(",");
                         for (j = 0; j < byteArray.length; j++) {
@@ -808,7 +810,7 @@ class Assembler {
                             address = (+address + insAfterLabel.substring(posOfSpace + 2, insAfterLabel.length - 1).length).toFixed();
                         }
                         else {
-                            this.mapForAscii.set(address, insAfterLabel.substring(posOfSpace + 2, insAfterLabel.length - 1) + "\n");
+                            this.mapForAscii.set(address, insAfterLabel.substring(posOfSpace + 2, insAfterLabel.length - 1) + "\0");
                             address = (+address + insAfterLabel.substring(posOfSpace + 2, insAfterLabel.length - 1).length + 1).toFixed();
                         }
                     }
@@ -822,6 +824,7 @@ class Assembler {
                 posOfSpace = ins.indexOf(" ");
                 dataIns = ins.substring(0, posOfSpace);
                 if (dataIns == ".word") {
+                    ins = dataIns + " " + ins.substring(posOfSpace).trim().replace(/\s+/g, ",");
                     if (ins.substring(posOfSpace).trim().indexOf(",") != -1) {
                         let wordArray = ins.substring(posOfSpace).trim().split(",");
                         for (j = 0; j < wordArray.length; j++) {
@@ -873,6 +876,7 @@ class Assembler {
                     }
                 }
                 else if (dataIns == ".byte") {
+                    ins = dataIns + " " + ins.substring(posOfSpace).trim().replace(/\s+/g, ",");
                     if (ins.substring(posOfSpace, ins.length).trim().indexOf(",") != -1) {
                         let byteArray = ins.substring(posOfSpace, ins.length).trim().split(",");
                         for (j = 0; j < byteArray.length; j++) {
@@ -917,7 +921,12 @@ class Assembler {
                         return false;
                     }
                     else {
-                        this.mapForAscii.set(address, ins.substring(posOfSpace + 2, ins.length - 1));
+                        if (dataIns == ".asciiz") {
+                            this.mapForAscii.set(address, ins.substring(posOfSpace + 2, ins.length - 1) + "\0");
+                        }
+                        else {
+                            this.mapForAscii.set(address, ins.substring(posOfSpace + 2, ins.length - 1));
+                        }
                         if (dataIns == ".ascii") {
                             address = (+address + ins.substring(posOfSpace + 2, ins.length - 1).length).toFixed();
                         }
@@ -967,6 +976,9 @@ class Assembler {
         let posOfSpace;
         let operator;
         let temp = [];
+        for (i = 0; i < this.sourceIns.length; i++) {
+            this.sourceIns.splice(i, 1, TrimSpace_1.trimSpace(this.sourceIns[i]));
+        }
         for (i = 0; i < this.sourceIns.length; i++) {
             if (this.sourceIns[i] == "syscall") {
                 temp.push(this.sourceIns[i]);
@@ -1036,12 +1048,13 @@ class Assembler {
                             ins1 = "beq $1,$0," + operand2;
                         }
                         else if (operator == "li") {
-                            if (+operand1 > -32768 && +operand1 < 32767) {
+                            if (+operand1 >= -32768 && +operand1 <= 32767) {
                                 ins0 = "addiu " + operand0 + ",$0," + operand1;
                             }
-                            else if (+operand1 > -2147483548 && +operand1 < 2147483547) {
-                                let first16bits = BinaryToDecimal_1.binaryToDecimal(operand1.substring(0, 16));
-                                let last16bits = BinaryToDecimal_1.binaryToDecimal(operand1.substring(16));
+                            else if (+operand1 >= -2147483648 && +operand1 <= 2147483647) {
+                                let im = DecimalToBinary_1.decimalToBinary(+operand1, 32);
+                                let first16bits = BinaryToUnsigendDecimal_1.binaryToUnsignedDecimal(im.substring(0, 16));
+                                let last16bits = BinaryToUnsigendDecimal_1.binaryToUnsignedDecimal(im.substring(16));
                                 ins0 = "lui $1," + first16bits;
                                 ins1 = "ori " + operand0 + ",$1," + last16bits;
                             }
@@ -1053,8 +1066,8 @@ class Assembler {
                         else if (operator == "la") {
                             if (this.mapForDataLabel.has(operand1.trim())) {
                                 let address = DecimalToBinary_1.decimalToBinary(+(this.mapForDataLabel.get(operand1) + ""), 32);
-                                let first16bits = BinaryToDecimal_1.binaryToDecimal(address.substring(0, 16));
-                                let last16bits = BinaryToDecimal_1.binaryToDecimal(address.substring(16));
+                                let first16bits = BinaryToUnsigendDecimal_1.binaryToUnsignedDecimal(address.substring(0, 16));
+                                let last16bits = BinaryToUnsigendDecimal_1.binaryToUnsignedDecimal(address.substring(16));
                                 ins0 = "lui $1," + first16bits;
                                 ins1 = "ori " + operand0 + ",$1," + last16bits;
                             }
@@ -1072,7 +1085,7 @@ class Assembler {
                             ins2 = "subu " + operand0 + ",$1," + operand0;
                         }
                         else if (operator == "sgt") {
-                            ins0 = "slt" + operand0 + "," + operand2 + "," + operand1;
+                            ins0 = "slt " + operand0 + "," + operand2 + "," + operand1;
                         }
                         if (ins0 != "") {
                             temp.push(ins0);
@@ -1143,6 +1156,7 @@ class Assembler {
                             mapForLabel.set(label, address);
                             labelCounter = instructionCounter;
                             mapForCounter.set(label, labelCounter.toFixed());
+                            continue;
                         }
                     }
                     else {
@@ -1158,6 +1172,9 @@ class Assembler {
         for (i = 0; i < this.sourceIns.length; i++) {
             if (this.sourceIns[i] == "" || patt.test(this.sourceIns[i]) || this.sourceIns[i].substring(this.sourceIns[i].length - 1, this.sourceIns[i].length) == ":") {
                 instructionCounter++;
+                if (this.sourceIns[i].substring(this.sourceIns[i].length - 1, this.sourceIns[i].length) == ":") {
+                    instructionCounter--;
+                }
                 continue;
             }
             else {
@@ -1167,10 +1184,10 @@ class Assembler {
                     jumpLabel = this.sourceIns[i].substring(posOfSpace, this.sourceIns[i].length).trim();
                     if (mapForLabel.has(jumpLabel)) {
                         if (operator == "j") {
-                            this.sourceIns[i] = "j " + mapForLabel.get(jumpLabel);
+                            this.sourceIns[i] = "j " + +(mapForLabel.get(jumpLabel) + "") / 4;
                         }
                         else {
-                            this.sourceIns[i] = "jal " + mapForLabel.get(jumpLabel);
+                            this.sourceIns[i] = "jal " + +(mapForLabel.get(jumpLabel) + "") / 4;
                         }
                     }
                     else {
@@ -1182,9 +1199,6 @@ class Assembler {
                     jumpLabel = this.sourceIns[i].substring(this.sourceIns[i].lastIndexOf(",") + 1, this.sourceIns[i].length).trim();
                     if (mapForLabel.has(jumpLabel)) {
                         relativeJump = +(mapForCounter.get(jumpLabel) + "") - instructionCounter - 1;
-                        if (relativeJump < 0) {
-                            relativeJump++;
-                        }
                         if (operator == "beq") {
                             this.sourceIns[i] = "beq" + this.sourceIns[i].substring(posOfSpace, this.sourceIns[i].lastIndexOf(",") + 1) + relativeJump.toFixed();
                         }

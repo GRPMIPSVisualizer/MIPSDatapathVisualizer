@@ -1,7 +1,27 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const Adder_1 = require("./Circuit/Adder");
-const Single_CycleCPU_1 = require("./CPU/Single-CycleCPU");
+// import {NAND} from "./Logic/NAND"
+// import {AND} from "./Logic/AND"
+// import {NOT} from "./Logic/NOT"
+// import {OR} from "./Logic/OR"
+// import {XOR} from "./Logic/XOR"
+// import {AND32} from "./Logic/AND32"
+// import {Mux} from "./Conponent/Mux"
+// import {DMux} from "./Conponent/DMux"
+// import {NOT32} from "./Logic/NOT32"
+// import {OR32} from "./Logic/OR32"
+// import {OR32WAY} from "./Logic/OR32WAY"
+// import {Mux4Way32} from "./Conponent/Mux4Way32"
+// import {Mux8Way32} from "./Conponent/Mux8Way32"
+// import { DMux8Way } from "./Conponent/DMux8Way"
+// import {bin2dec,decToSignedBin32, stringToIntArray,decToUnsignedBin32} from "./Library/StringHandle"
+// import {Adder} from "./Circuit/Adder"
+// import {ALU} from "./Circuit/ALU"
+// import { Latch } from "./Circuit/Latch"
+// import { DFlipFlop } from "./Circuit/DFlipFlop"
+// import { _32BitsRegister } from "./Circuit/Register"
+// import { Memory } from "./Circuit/Memory"
+// import { singleCycleCpu } from "./CPU/Single-CycleCPU"
+// import { RegisterFile } from "./Circuit/RegisterFile"
 // import { DFlipFlop } from "./Circuit/DFlipFlop"
 // let a:AND = new AND(0,0);
 // let b:AND = new AND(1,0);
@@ -249,8 +269,8 @@ const Single_CycleCPU_1 = require("./CPU/Single-CycleCPU");
 //     }
 //   }
 //   let p2:Person = new Person('哈哈', 20);
-let adderTest = new Adder_1.Adder("00000000010000000000000000111100", "11111111111111111111111111000100");
-let sinCycCPU = new Single_CycleCPU_1.singleCycleCpu();
+// let adderTest:Adder = new Adder("00000000010000000000000000111100","11111111111111111111111111000100");
+// let sinCycCPU:singleCycleCpu = new singleCycleCpu();
 // addiu $0
 // let InsSet:string[] = 
 //  [
@@ -485,8 +505,8 @@ let shiftJump = [
     // sll $zero,$zero,0
     "00000000000000000000000000000000"
 ];
-let SyscallTest = [];
-sinCycCPU.storeIns(SetLessThan);
-sinCycCPU.runWhole();
+// let SyscallTest = [];
+// sinCycCPU.storeIns(SetLessThan);
+// sinCycCPU.runWhole();
 // sinCycCPU.debugPC();
 //# sourceMappingURL=Main.js.map
